@@ -30,6 +30,18 @@ export class SocketServer {
         socket.emit('displayMessage', message);
     }
 
+    // removes lobbies that are empty 
+
+
+    checkLobbies = (): void => {
+        let newLobbies: Array<Lobby> = [];
+        this.lobbies.map(l => {
+            if(l.players.length > 0) newLobbies.push(l);
+        });
+        this.lobbies = newLobbies;
+    }
+
+
     private listen(): void {
         this.io.on('connection', function(socket){
             console.log('a user connected');
@@ -38,6 +50,7 @@ export class SocketServer {
         this.io.on('connect', (socket: any) => {
 
             socket.on('getLobbies', () => {
+                this.checkLobbies();
                 let res: any = [];
                 this.lobbies.map( l => {
                     res.push({
@@ -131,6 +144,7 @@ export class SocketServer {
                 })
                 console.log(this.lobbies);
                 console.log('Client disconnected');
+                this.checkLobbies();
             });
         });
     }
