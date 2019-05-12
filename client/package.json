@@ -1,0 +1,30 @@
+{
+  "name": "node-typescript-webpack-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npm-run-all --parallel watch:server watch:build",
+    "watch:server": "nodemon \"./build/bundle.js\" --watch \"./build\" ",
+    "watch:build": "webpack --watch",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.1",
+    "ts-loader": "^3.0.5",
+    "typescript": "^2.5.3",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "@types/node": "^12.0.0",
+    "@types/socket.io-client": "^1.4.32",
+    "fsync": "0.0.0",
+    "rmdir": "^1.2.0",
+    "scandir": "^0.1.2",
+    "socket.io-client": "^2.2.0"
+  }
+}

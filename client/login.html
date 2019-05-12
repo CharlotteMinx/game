@@ -1,0 +1,61 @@
+<button onclick="location.href='/game';" >Home</button>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+        <script>
+            var socket = io();
+            socket.emit('getLobbies');
+
+            // join lobby and redirects to game page
+
+            socket.on('lobbiesInfo', lobbies => {
+                var html = "";
+                lobbies.map(l => {
+                    html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> </li>`;
+                });
+                document.getElementById('lobbies').innerHTML = html;
+            });
+
+            // joins lobby after creating it
+
+            socket.on('createdLobby', (lobbyId) => {
+                joinLobby(lobbyId);
+            });
+
+            var joinLobby = function(id) {
+                var username = document.getElementById('username').value;
+                if(username !== '') {
+                    var url = new URL( window.location);
+                    url.pathname = 'game';
+                    url.searchParams.set('lobby',id);
+                    url.searchParams.set('username', username);
+                    window.location = url;
+                }
+            }
+            
+           
+
+            var createLobby = function() {
+                var name = document.getElementById("lobbyname");
+                console.log(name.value);
+                if(name.value !== "") {
+                    socket.emit('createLobby', {lobbyName: name.value});
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <input type="text" id="username">
+        <ul id="lobbies">
+
+
+        </ul>
+        <hr />
+        <p>Create lobby</p>
+        <input type="text" id="lobbyname"/>
+        <button onclick="createLobby()" >create</button>
+
+    </body>
+</html>
