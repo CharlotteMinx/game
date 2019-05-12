@@ -100,7 +100,7 @@ export class SocketServer {
                     round: 0,
                     name: data.lobbyName,
                     lobbyId: this.lobbies.length > 0 ? this.lobbies[this.lobbies.length-1].lobbyId + 1 : 0,
-                    maxPlayers: 1,
+                    maxPlayers: 3,
                 }
                 socket.emit('createdLobby', newLobby.lobbyId);
                 this.lobbies.push(newLobby);
