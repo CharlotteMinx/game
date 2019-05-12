@@ -1,5 +1,5 @@
 
-import {joinLobbyMessage, Player, Lobby, createLobbyMessage} from './types';
+import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item} from './types';
 import { emit } from 'cluster';
 
 export class SocketServer { 
@@ -41,6 +41,21 @@ export class SocketServer {
         this.lobbies = newLobbies;
     }
 
+
+    getStandartItemsByRole = (role: string): Array<Item> => {
+        let items: Array<Item>;
+
+        for(let i = 0; i < 5; i++ ) {
+            items.push({
+                name: 'itemname',
+                info: 'useless',
+                cssClass: 'testitem',
+                data: 'none',
+                action: {},
+            })
+        }
+        return items;
+    }
     
 
     private listen(): void {
@@ -62,6 +77,23 @@ export class SocketServer {
                     });
                 })
                 socket.emit("lobbiesInfo", res)
+            })
+
+
+            socket.on('getLobbyStatus', () => {
+                let lobby: Lobby;
+                this.lobbies.map(l => {
+                    l.players.map(p => {
+                        if(p.id = socket.id) {
+                            lobby = l;
+                        }
+                    })
+                });
+
+                if(!lobby) this.kickClient(socket, 'Unexpected error.');
+                
+                socket.emit('updateLobbyStatus', lobby);
+                
             })
 
 
@@ -90,6 +122,7 @@ export class SocketServer {
                             socket: socket,
                             username: data.client.username,
                             role: roles[i],
+                            items: this.getStandartItemsByRole(roles[i]),
                         };
 
                         lobby.players.push(newPlayer);
@@ -126,7 +159,7 @@ export class SocketServer {
 
             socket.on('clientLeaving', () => {
                 this.lobbies.map( (lobby: Lobby) => {
-                    lobby.players.map((player: Player, index: number) => {
+                    lobby.players.map((player: Player) => {
                         let players = [];
                         let disconnectedUsername: string;
                         if(player.id != socket.id) {

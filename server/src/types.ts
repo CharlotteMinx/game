@@ -15,6 +15,7 @@ export type Player = {
     username: string;
     role: string,
     socket: Socket;
+    items: Array<Item>;
 }
 
 
@@ -22,6 +23,12 @@ export type Item = {
     name: string;
     info: string;
     cssClass: string;
+    data: string;
+    action: Action;
+}
+
+export type Action = {
+
 }
 
 export type joinLobbyMessage = {
