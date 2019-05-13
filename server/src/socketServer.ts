@@ -1,5 +1,5 @@
 
-import {joinLobbyMessage, Player, Lobby, createLobbyMessage} from './types';
+import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item} from './types';
 import { emit } from 'cluster';
 
 export class SocketServer { 
@@ -16,28 +16,57 @@ export class SocketServer {
     }
 
 
+    // kicks player from gape page back to login page with optional message
+
     kickClient = (socket: any, message?: string): void => {
         console.log('kicking')
         socket.emit('kickClient', message);
     }
 
-    sendErrorToClient = (socket: any, message: string): void => {
-        console.log('error ' + message)
-        socket.emit('displayError', message);
-    }
+
+    // sends message to client
 
     sendMessageToClient = (socket: any, message: string): void => {
         socket.emit('displayMessage', message);
     }
 
+
+    // removes lobbies that are empty 
+
+    checkLobbies = (): void => {
+        let newLobbies: Array<Lobby> = [];
+        this.lobbies.map(l => {
+            if(l.players.length > 0) newLobbies.push(l);
+        });
+        this.lobbies = newLobbies;
+    }
+
+
+    getStandartItemsByRole = (role: string): Array<Item> => {
+        let items: Array<Item>;
+
+        for(let i = 0; i < 5; i++ ) {
+            items.push({
+                name: 'itemname',
+                info: 'useless',
+                cssClass: 'testitem',
+                data: 'none',
+                action: {},
+            })
+        }
+        return items;
+    }
+    
+
     private listen(): void {
-        this.io.on('connection', function(socket){
-            console.log('a user connected');
-          });
           
         this.io.on('connect', (socket: any) => {
 
+
+            // sends avaible lobbies to client
+
             socket.on('getLobbies', () => {
+                this.checkLobbies();
                 let res: any = [];
                 this.lobbies.map( l => {
                     res.push({
@@ -49,6 +78,24 @@ export class SocketServer {
                 })
                 socket.emit("lobbiesInfo", res)
             })
+
+
+            socket.on('getLobbyStatus', () => {
+                let lobby: Lobby;
+                this.lobbies.map(l => {
+                    l.players.map(p => {
+                        if(p.id = socket.id) {
+                            lobby = l;
+                        }
+                    })
+                });
+
+                if(!lobby) this.kickClient(socket, 'Unexpected error.');
+                
+                socket.emit('updateLobbyStatus', lobby);
+                
+            })
+
 
             // assigns client to lobby
 
@@ -75,6 +122,7 @@ export class SocketServer {
                             socket: socket,
                             username: data.client.username,
                             role: roles[i],
+                            items: this.getStandartItemsByRole(roles[i]),
                         };
 
                         lobby.players.push(newPlayer);
@@ -91,6 +139,7 @@ export class SocketServer {
                 }
             });
 
+
             // creates new lobby
 
             socket.on('createLobby', (data: createLobbyMessage) => {
@@ -100,23 +149,17 @@ export class SocketServer {
                     round: 0,
                     name: data.lobbyName,
                     lobbyId: this.lobbies.length > 0 ? this.lobbies[this.lobbies.length-1].lobbyId + 1 : 0,
-                    maxPlayers: 1,
+                    maxPlayers: 3,
                 }
                 socket.emit('createdLobby', newLobby.lobbyId);
                 this.lobbies.push(newLobby);
             });
 
-            
-
-
-            socket.on('message', (m: any) => {
-                console.log('[server](message): %s', JSON.stringify(m));
-                this.io.emit('message', m);
-            });
+            // detaches client from lobby and deletes lobby if it remains empty
 
             socket.on('clientLeaving', () => {
                 this.lobbies.map( (lobby: Lobby) => {
-                    lobby.players.map((player: Player, index: number) => {
+                    lobby.players.map((player: Player) => {
                         let players = [];
                         let disconnectedUsername: string;
                         if(player.id != socket.id) {
@@ -129,8 +172,7 @@ export class SocketServer {
                        lobby.players.map( p => this.sendMessageToClient(p.socket, disconnectedUsername + " has disconected."));
                     })
                 })
-                console.log(this.lobbies);
-                console.log('Client disconnected');
+                this.checkLobbies();
             });
         });
     }

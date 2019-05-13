@@ -8,15 +8,20 @@ const router = express.Router();
 var http = require("http").Server(app);
 
 app.use(express.static(path.resolve('./../client/build/')));
-console.log(express.static(path.resolve('./../client/build/')))
+
 // login page
+
 router.get("/login", (req: any, res: any) => {
 	res.sendFile(path.resolve('./../client/login.html'));
 });
 
+// game page
+
 router.get("/game", (req: any, res: any) => {
 	res.sendFile(path.resolve('./../client/game.html'));
 });
+
+// redirects to login page 
 
 router.get("*", (req: any, res: any) => {
 	res.redirect("/login");
@@ -24,9 +29,12 @@ router.get("*", (req: any, res: any) => {
 
 app.use('/', router);
 
+// starts socket server
+
 const sockets = new SocketServer(http);
 // start our simple server up on localhost:3000
 
+// starts http server
 
 const server = http.listen(3000, function() {
   console.log("listening on *:3000");
