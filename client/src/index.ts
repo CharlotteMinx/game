@@ -1,16 +1,15 @@
 import * as socket from 'socket.io-client';
 
 
-
-
 let io = socket();
 
 // gets parameters from url
+
 var url = new URL( window.location + "");
 let lobbyId = url.searchParams.get('lobby');
 let username = url.searchParams.get('username');
 
-// joins lobby from get params
+// joins lobby by data from get params
 
 if(lobbyId && username) {
 
@@ -33,6 +32,8 @@ io.on('kickClient', (message?: string) => {
     (window as any).location = url;
 })
 
+
+// sends information of client leaving to detach player from lobby
 window.onbeforeunload = function(){
     io.emit('clientLeaving');
   };
