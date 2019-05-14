@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles.css">
     <!-- Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css?family=Cabin:400,700|Karla:400,700|Oxygen:400,700|Raleway:400,700&amp;subset=latin-ext" rel="stylesheet">
@@ -10,23 +10,24 @@
   </head>
   <body class="flex_container" id="main">
     <div class="flex_container" id="map"></div>
-    <div class="flex_container" id="sidebar"></div>
-    <button class="flex_container" id="btn_add"><i class="material-icons"> add_circle_outline </i><span id="btn_add_info"> Add item </span></button>
-    <div class="hidden flex_container" id="add_options">
-      <button id="btn_add_msg"><i class="material-icons"> edit </i><span> Message </span></button>
-      <button id="btn_add_rcp"><i class="material-icons"> person_add </i><span> Recipient </span></button>
-      <button id="btn_add_key"><i class="material-icons"> vpn_key </i><span> Key </span></button>
-    </div>
-    <div class="hidden" id="user_msg">
-      <textarea></textarea>
-    </div>
-    <div class="hidden" id="destinations">
-      <button class="btn_recipient" id="alice"></button>A
-      <button class="btn_recipient" id="bob"></button>B
-    </div>
-    <div class="hidden" id="keys">
-      <button class="access" id="public"><i class="material-icons">lock_open</i></button>
-      <button class="access" id="private"><i class="material-icons">lock_outline</i></button>
+    <div class="flex_container" id="sidebar">
+      <button class="flex_container" id="btn_add"><i class="material-icons"> add_circle_outline </i><span id="btn_add_info"> Add item </span></button>
+      <div class="hidden flex_container" id="add_options">
+        <button id="btn_add_msg"><i class="material-icons"> edit </i><span> Message </span></button>
+        <button id="btn_add_rcp"><i class="material-icons"> person_add </i><span> Recipient </span></button>
+        <button id="btn_add_key"><i class="material-icons"> vpn_key </i><span> Key </span></button>
+      </div>
+      <div class="hidden" id="user_msg">
+        <textarea></textarea>
+      </div>
+      <div class="hidden" id="destinations">
+        <button class="btn_recipient" id="alice">A</button>
+        <button class="btn_recipient" id="bob">B</button>
+      </div>
+      <div class="hidden" id="keys">
+        <button class="access" id="public"><i class="material-icons">lock_open</i></button>
+        <button class="access" id="private"><i class="material-icons">lock_outline</i></button>
+      </div>
     </div>
   </body>
 </html>
