@@ -43,7 +43,7 @@ export class SocketServer {
 
 
     getStandartItemsByRole = (role: string): Array<Item> => {
-        let items: Array<Item>;
+        let items: Array<Item> = [];
 
         for(let i = 0; i < 5; i++ ) {
             items.push({
@@ -170,9 +170,9 @@ export class SocketServer {
                         console.log(disconnectedUsername + " has left. ")
                        lobby.players = players;
                        lobby.players.map( p => this.sendMessageToClient(p.socket, disconnectedUsername + " has disconected."));
-                    })
+                    });
                 })
-                this.checkLobbies();
+               // TODO this.checkLobbies();
             });
         });
     }
