@@ -1,0 +1,133 @@
+/*--------GENERICS--------*/
+
+    :root {
+    --dark: #1B171F;
+    --darkish: #26212B;
+    --light: #CCB6E0;
+    --lightish: #A895BA;
+    --main: #F5FF3B;
+    
+    --pad: 0.5rem;
+    }
+
+    body {
+    /*TODO*/
+    font-family: 'Cabin', sans-serif;
+    }
+
+    button, input, a {
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    }
+
+    .flex_container {
+    display: flex;
+    margin: 0;
+    }
+
+    .hidden {
+    display: none;
+    }
+
+    button {
+    font-weight: bold;
+    padding: var(--pad);
+    border-radius: 0.3rem;
+    cursor: pointer;
+    height: 2.5rem;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    }
+
+    button i {
+    padding-right: var(--pad);
+    }
+/*--------/GENERICS--------*/
+
+
+/*--------BODY--------*/
+
+    #map, #sidebar {
+    margin: 0;
+    height: 100vh;
+    }
+
+    #map {
+    width: 40vw;
+    background-color: rgb(230, 200, 210);
+    
+    /*TODO*/
+    display: none;
+    }
+
+    #sidebar {
+    padding: 2rem;
+    
+    /*TODO*/
+    width: 90vw;
+    background-color: var(--darkish);
+    }
+
+/*--------/BODY--------*/
+
+#btn_add {
+  background-color: var(--main);
+  color: var(--darkish);
+}
+
+#add_options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  flex-direction: row;
+  justify-content: center;
+  
+  margin: 2rem 0;
+}
+
+#add_options li {
+  background-color: var(--dark);
+  color: var(--light);
+  margin: 0 var(--pad);
+}
+
+/* MESSAGE */
+#user_msg textarea {
+  background-color: var(--dark);
+  color: var(--light);
+  border: none;
+  border-radius: 0.3rem;
+  font-family: 'Cabin', sans-serif;
+  padding: var(--pad);
+  
+  resize: none;
+  
+  /*TODO*/
+  font-size: 2rem;
+  width: 90%;
+  height: 5rem;
+}
+
+/* ADDRESSEE */
+    .btn_recipient {
+    width: 40px;
+    height: 40px;
+    }
+
+    #alice {
+    background-color: rgb(100, 100, 250);
+    color: white;
+    }
+    #bob {
+    background-color: rgb(250, 100, 100);
+    }
+
+/* /ADDRESSEE */
+
+/* KEYS */

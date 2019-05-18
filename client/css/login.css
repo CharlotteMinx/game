@@ -1,0 +1,168 @@
+:root {
+  --dark: #1B171F;
+  --darkish: #26212B;
+  --light: #E8CFFF;
+  --lightish: #A895BA;
+  --main: #EBE619;
+  
+  --pad: 0.5rem;
+  
+  font-size: 150%;
+}
+
+body {
+  /*TODO*/
+  font-family: 'Some time later';
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100vh;
+  
+  background-color: var(--darkish);
+}
+
+button, input, a {
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+}
+
+.flex_container {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/*TODO*/
+
+.hidden {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+  
+  font-weight: bold;
+  padding: var(--pad);
+  border-radius: 0.3rem;
+  cursor: pointer;
+  height: 2rem;
+  
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  
+  font-family: "Some time later";
+  font-size: 1.2rem;
+}
+
+button i {
+  padding-right: var(--pad);
+}
+
+#games {
+  padding: var(--pad);
+  margin: 0 auto;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#games p {
+  background-color: var(--dark);
+  border-radius: 0.3rem;
+  padding: var(--pad);
+  color: var(--light);
+  text-align: center;
+}
+
+#games li {
+  background-color: var(--dark);
+  color: var(--light);
+  
+  margin-bottom: var(--pad);
+  padding: var(--pad);
+  border-radius: 0.3rem;
+  
+  display: flex;
+
+  height: 2rem;
+  
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+#games li button {
+  width: 4rem;
+  background-color: var(--main);
+  color: var(--darkish);
+}
+
+
+#join_game {
+  overflow-y: auto;
+}
+
+#join_game ul {
+  padding: 0;
+  margin: 0;
+}
+
+
+#create_game form {
+  background-color: var(--dark);
+  padding: var(--pad);
+  border-radius: 0.3rem;
+  color: var(--light);
+}
+
+#new_game {
+  display: flex;
+  flex-flow: column wrap;
+  padding: var(--pad)
+}
+
+.game_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  margin: var(--pad) 0;
+}
+
+.game_info input {
+  width: 70%;
+  color: var(--light);
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+#new_game button {
+  background-color: var(--main);
+  color: var(--darkish);
+}
+
+input {
+  background-color: transparent;
+  border-bottom: 1px solid var(--main);
+  font-size: 1rem;
+  color: var(--light);
+}
+
+#user_info {
+  color: var(--light);
+  background-color: var(--dark);
+  border-radius: 0.3rem;
+  padding: calc(var(--pad) * 2);
+}
+
+#create_game, #join_game {
+  padding: var(--pad);
+  width: 50%;
+  background-color: var(--darkish);
+}

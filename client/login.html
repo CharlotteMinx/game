@@ -46,16 +46,33 @@
             }
         </script>
     </head>
-    <body>
-        <input type="text" id="username">
-        <ul id="lobbies">
+<body class="flex_container">
+  <div class="flex_container" id="user_info">
+    <label for="username" id="un_label"> Username </label>
+    <input type="text" id="username">
+  </div>
+  <div class="flex_container" id="games">
+    <div class="flex_container" id="join_game">
+      <p> Join a game </p>
+      <ul id="lobbies">
+        <li> Game 1
+          <button> Join </button>
+        <li> Another game
+          <button> Join </button>
+      </ul>
+    </div>
 
+    <div class="flex_container" id="create_game">
+      <p> Create a game </p>
+      <form id="new_game">
+        <div class="game_info">
+          <label> Name </label>
+          <input type="text" id="game_name" name="game_name" id="lobbyname">
+        </div>
+        <button onclick="createLobby()" >Create</button>
+      </form>
+    </div>
+  </div>
 
-        </ul>
-        <hr />
-        <p>Create lobby</p>
-        <input type="text" id="lobbyname"/>
-        <button onclick="createLobby()" >create</button>
-
-    </body>
+</body>
 </html>
