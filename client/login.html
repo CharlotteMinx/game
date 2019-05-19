@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Page Title</title>
+        <link rel="stylesheet" href="./login.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
         <script>
             var socket = io();
@@ -10,6 +11,7 @@
             // join lobby and redirects to game page
 
             socket.on('lobbiesInfo', lobbies => {
+              console.log(lobbies)
                 var html = "";
                 lobbies.map(l => {
                     html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> </li>`;
@@ -17,9 +19,17 @@
                 document.getElementById('lobbies').innerHTML = html;
             });
 
+            // TODO display message from the server
+
+            socket.on('displayMessage', message => {
+              console.log(message);
+            })
+
+
             // joins lobby after creating it
 
             socket.on('createdLobby', (lobbyId) => {
+              console.log('createdLobby' + lobbyId)
                 joinLobby(lobbyId);
             });
 
@@ -39,6 +49,7 @@
             var createLobby = function() {
                 var name = document.getElementById("lobbyname");
                 console.log(name.value);
+              
                 if(name.value !== "") {
                     socket.emit('createLobby', {lobbyName: name.value});
                 }
@@ -63,13 +74,13 @@
 
     <div class="flex_container" id="create_game">
       <p> Create a game </p>
-      <form id="new_game">
+      <div id="new_game">
         <div class="game_info">
           <label> Name </label>
-          <input type="text" id="game_name" name="game_name" id="lobbyname">
+          <input type="text" name="game_name" id="lobbyname">
         </div>
         <button onclick="createLobby()" >Create</button>
-      </form>
+      </div>
     </div>
   </div>
 

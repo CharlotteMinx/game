@@ -7,6 +7,8 @@ export type Lobby = {
     round: number;
     maxPlayers: number;
     lobbyId: number;
+    created: Date;
+    turn: string;
 }
 
 
@@ -16,6 +18,7 @@ export type Player = {
     role: string,
     socket: Socket;
     items: Array<Item>;
+    objective: string;
 }
 
 
