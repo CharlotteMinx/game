@@ -19,6 +19,11 @@ if(lobbyId && username) {
             username: username,
         }
     })
+} else {
+//     var url = new URL( window.location + "");
+//    // document.body.innerHTML = `<div class='kickedMessage--container' >${message}</div>`;
+//     url.pathname = 'lobby';
+//     (window as any).location = url;
 }
 
 // checks if user has joined

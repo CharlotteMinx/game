@@ -3,7 +3,7 @@
 #chat {
   background-color: red;
   position: absolute;
-  right: 0px;
+  left: 0px;
   bottom: 0px;
   width: 300px;
   height: 400px;
@@ -52,43 +52,12 @@ right: 0px;
 background-color: pink;
 }
 
-
-/* inventory  */
-.inventory--wrapper {
-  position: absolute;
-  bottom: 0px;
-  background-color: blue;
-  height: 100px;
-  width: 100%;
-}
-
-#inventory {
-  width: 40%;
-  margin: auto;
-  height: 100%;
-  background-color: violet;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-}
-
-.inventory--item__wrapper {
-  display: flex;
-  margin: 10px;
-  height: calc(100% - 20px);
-  flex-grow: 1;
-  max-width: 130px;
-  background-color: yellow;
-  border-radius: 15px;
-}
-
 .scoreboard--wrapper {
   position: absolute;
   top: 0px;
   left: 0px;
   right: 0px;
+  z-index: 5;
   background-color: blue;
   height: 70px;
 }
@@ -130,4 +99,20 @@ background-color: pink;
   font-size: 26px;
   cursor: pointer;
 
+}
+
+#app > .left {
+  width: 65%;
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  background-color: grey;
+}
+
+#app > .right {
+  width: 35%;
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  background-color: greenyellow;
 }
