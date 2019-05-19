@@ -14,7 +14,7 @@
               console.log(lobbies)
                 var html = "";
                 lobbies.map(l => {
-                    html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> </li>`;
+                    html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> <button> Join </button> </li>`;
                 });
                 document.getElementById('lobbies').innerHTML = html;
             });

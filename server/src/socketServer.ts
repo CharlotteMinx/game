@@ -8,7 +8,7 @@ import { Socket } from 'dgram';
 export class SocketServer { 
     private io: SocketIO.Server;
     private lobbies: Array<Lobby>;
-
+    private roles = ['alice', 'bob', 'hacker'];
     constructor(server: any) {
         this.io = require('socket.io')(server, {
             serveClient: false,
@@ -38,8 +38,10 @@ export class SocketServer {
 
     checkLobbies = (): void => {
         let newLobbies: Array<Lobby> = [];
+        
         this.lobbies.map(l => {
-            if(l.players.length > 0) newLobbies.push(l);
+            console.log((moment(l.updated).add(5, 'minutes').isAfter(moment())))
+            if(l.players.length > 0 || (moment(l.updated).add(30, 'seconds').isAfter(moment())))  newLobbies.push(l);
         });
         this.lobbies = newLobbies;
     }
@@ -105,21 +107,25 @@ export class SocketServer {
     getGameStatus = (socket: any) => {
         let lobby: Lobby = this.getLobbyBySocketId(socket.id);
         let players: any = [];
-        lobby.players.map((p: Player) => {
-            players.push({
-                username: p.username,
-                role: p.role,
+        if(lobby) {
+            lobby.players.map((p: Player) => {
+                players.push({
+                    username: p.username,
+                    role: p.role,
+                });
             });
-        });
-        let res = {
-            lobby: {
-                players: players,
-                name: lobby.name,
-                round: lobby.round,
-                turn: lobby.players.find(p => p.id == lobby.turn).username,
-            }
-        };
-        return res;
+            let res = {
+                lobby: {
+                    players: players,
+                    name: lobby.name,
+                    round: lobby.round,
+                    turn: lobby.players.find(p => p.id == lobby.turn).username,
+                }
+            };
+            return res;
+        } else {
+            this.sendMessageToClient(socket, "Error when getting game status has occured.")
+        }
     }
 
     private listen(): void {
@@ -155,21 +161,22 @@ export class SocketServer {
                     if(lobby.maxPlayers > lobby.players.length) {
 
                         let i = 0;
-                        let roles = ['bob', 'alice', 'hacker'];
+                        
                         lobby.players.map(p => {
-                            p.role == roles[i] ? i++ : undefined;
+                            p.role == this.roles[i] ? i++ : undefined;
                         });
 
                         let newPlayer: Player = {
                             id: socket.id,
                             socket: socket,
                             username: data.client.username,
-                            role: roles[i],
-                            items: this.getStandartItemsByRole(roles[i]),
-                            objective: this.getObjectiveByRole(roles[i]),
+                            role: this.roles[i],
+                            items: this.getStandartItemsByRole(this.roles[i]),
+                            objective: this.getObjectiveByRole(this.roles[i]),
                         };
                         if(lobby.players.length == 0) lobby.turn = newPlayer.id;
                         lobby.players.push(newPlayer);
+                        lobby.updated =  moment().toDate();
                         lobby.players.map((player: Player) => {
                             
                             if(player.id !== newPlayer.id) {
@@ -189,17 +196,37 @@ export class SocketServer {
             });
 
 
+            socket.on('endTurn', () => {
+                let lobby = this.getLobbyBySocketId(socket.id);
+                let player: Player = lobby.players.find(p => {return p.id == socket.id});
+                if(player.id == lobby.turn) {
+                    if(lobby.players.length == lobby.maxPlayers) {
+                        let nextRoleIndex = this.roles.indexOf(player.role)+1;
+                        nextRoleIndex = nextRoleIndex > this.roles.length -1 ? 0 : nextRoleIndex;
+                        let newPlayer = lobby.players.find(p => {return p.role == this.roles[nextRoleIndex]});
+                        lobby.turn = newPlayer.id;
+                        console.log(lobby.turn);
+                        lobby.players.map( p => {
+                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
+                        });
+                    } else {
+                        this.sendMessageToClient(socket, "Wait till the lobby is full!");
+                    }
+                } else {
+                    this.kickClient(socket, "Unexpected error");
+                }
+            });
+
             // creates new lobby
 
             socket.on('createLobby', (data: createLobbyMessage) => {
-                console.log('creating lobby ' + data.lobbyName);
                 let newLobby: Lobby = {
                     players: [],
                     round: 0,
                     name: data.lobbyName,
                     lobbyId: this.lobbies.length > 0 ? this.lobbies[this.lobbies.length-1].lobbyId + 1 : 0,
                     maxPlayers: 3,
-                    created: moment().toDate(),
+                    updated: moment().toDate(),
                     turn: '',
                 }
                 socket.emit('createdLobby', newLobby.lobbyId);
@@ -213,24 +240,23 @@ export class SocketServer {
                 this.lobbies.map( (lobby: Lobby) => {
                     let players: Array<Player> = [];
                     lobby.players.map((player: Player) => {
-                       
+                       console.log(player.id + " vs " + socket.id)
                         if(player.id != socket.id) {
                             players.push(player);
                         } else {
-                            
                             disconectedPlayer = player;
                         }
                        
                     });
+                    lobby.updated =  moment().toDate();
                     lobby.players = players;
 
                     // sends message to other players that someone left
                     if(disconectedPlayer && disconectedPlayer.username) {
                         lobby.players.map( p => {
                             this.sendMessageToClient(p.socket, disconectedPlayer.username + " has disconected.")
-                            socket.emit('gameStatus', this.getGameStatus(p.socket));
-
-                        });
+                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
+                        }); 
                         this.checkLobbies();
                         this.io.emit("lobbiesInfo",  this.getLobies(socket));
                     }

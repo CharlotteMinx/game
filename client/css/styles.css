@@ -130,8 +130,11 @@ body {
 	background-color: greenyellow;
 	flex-grow: 35;
 }
-
-#playersBox {
+.playerBox--wrapper h3 {
+	padding: 0px;
+	margin: 0px;
+}
+.playerBox--wrapper {
 	position: absolute;
 	z-index: 5;
 	left: 0;
@@ -164,4 +167,10 @@ body {
 }
 #playersBox .role::after {
 	content: ")";
+}
+
+#sendBtn {
+	position: absolute;
+	top: 40%;
+	left: 65%;
 }

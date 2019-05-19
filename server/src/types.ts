@@ -7,7 +7,7 @@ export type Lobby = {
     round: number;
     maxPlayers: number;
     lobbyId: number;
-    created: Date;
+    updated: Date;
     turn: string;
 }
 

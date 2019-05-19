@@ -1,6 +1,5 @@
 import * as socket from 'socket.io-client';
 
-
 let io = socket();
 
 // gets parameters from url
@@ -50,6 +49,7 @@ io.on('joinedLobby', () => {
 
 // game loop info refresh
 io.on('gameStatus', (data: any) => {
+	console.log('game loop update')
 	// displays lobby name
 	document.getElementById('lobbyName').innerText = data.lobby.name;
 	
@@ -65,7 +65,14 @@ io.on('gameStatus', (data: any) => {
 	document.getElementById('playersBox').innerHTML = html;
 });
 
+let endTurn = () => {
+	io.emit('endTurn');
+}
 
+window.onload = function() {
+	document.getElementById("sendBtn").addEventListener('click', () => endTurn());
+
+}
 // sends information of client leaving to detach player from lobby
 window.onbeforeunload = function(){
 	io.emit('clientLeaving');
