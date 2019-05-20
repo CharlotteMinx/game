@@ -117,18 +117,18 @@ body {
 	position: relative;
 	z-index: 3;
 	height: 100%;
-	display: inline-block;
+	display: flex;
 	background-color: grey;
-	flex-grow: 65;
+	flex: 65;
 }
 
 #app>.right {
 	position: relative;
-	display: inline-block;
+	display: flex;
 	z-index: 3;
 	height: 100%;
 	background-color: greenyellow;
-	flex-grow: 35;
+	flex: 35;
 }
 .playerBox--wrapper h3 {
 	padding: 0px;
@@ -173,4 +173,52 @@ body {
 	position: absolute;
 	top: 40%;
 	left: 65%;
+}
+.message--wrapper {
+	margin-top: 100px;
+	width: 100%;
+	height: min-content;
+	padding: 30px;
+}
+
+#messageBody {
+	width: 100%;
+}
+
+.message--attachment > div {
+	background-color: red;
+	display: inline-block;
+	width: 70px;
+	height: 40px;
+	margin-right: 20px;
+}
+
+.obejctive--wrapper {
+	position: absolute;
+	top: 25%;
+	background-color: yellow;
+	padding: 10px;
+	border: 1px solid black;
+}
+.obejctive--wrapper > h3 {
+	padding: 0px;
+	margin: 0px;
+}
+
+#app.onTurn .scoreboard--wrapper {
+	background: black;
+}
+
+.inventory--wrapper {
+	position: absolute;
+	top: 60%;
+	padding: 30px;
+}
+#inventory > div {
+	background-color: red;
+	display: inline-block;
+	width: auto;
+	margin-right: 20px;
+	white-space: nowrap;
+	padding: 5px;
 }

@@ -35,6 +35,7 @@
 			<div class="obejctive--wrapper">
 				<h3>Objective</h3>
 				<div id="objective">Win.</div>
+				<div><span>Your role is</span> <span id="role"></span></div>
 			</div>
 
 			<!-- players -->
@@ -42,9 +43,6 @@
 				<h3>Players</h3>
 				<div id="playersBox"></div>
 			</div>
-
-			<button id="sendBtn">turn</button>
-			
 
 			<div class="message-wrapper">
 				<div class="message" id="message">
@@ -55,7 +53,43 @@
 
 		<!-- right side -->
 		<div class="right">
-			
+			<div class="message--wrapper">
+				<div class="message--header">
+					<div class="message--head">
+						<div class="message--sender_wrapper">
+							<span class="from"> From: </span>
+							<select class="sender">
+									<option value="option1" selected="selected">Option 1</option>
+									<option value="option2">Option 2</option>
+							</select>
+						</div>
+						<div class="message--target_wrapper">
+							<span class="to"> To: </span>
+								<select class="target">
+										<option value="option1" selected="selected">Option 1</option>
+										<option value="option2">Option 2</option>
+								</select>
+						</div>
+						
+					</div>
+					<div id="messageAttachment" class="message--attachment">
+						<div class="key">key</div> 
+						<div class="credit-card">card</div>
+						<div class="secret-text">secret</div>
+					</div>
+				</div>
+				<div id="messageBody" class="message--body">
+					<textarea name="messageBody" id="messageBody" cols="30" rows="10"></textarea>
+				</div>
+				<button id="sendBtn">turn</button>
+			</div>
+
+			<div class="inventory--wrapper">
+				<h3>Inventory</h3>
+				<div id="inventory">
+					
+				</div>
+			</div>
 		</div>
 
 	</div>
@@ -64,16 +98,12 @@
 	<div id="chat" class="chat--wrapper">
 		<div id="chatContainer" class="chat--container">
 			<span class="chat--item">
-				<span class="chat--name">aa</span>
-				<span class="chat--message">aa</span>
-			</span>
-			<span class="chat--item">
-				<span class="chat--name">aa</span>
-				<span class="chat--message">aa</span>
+				<span class="chat--name">user1</span>
+				<span class="chat--message">test</span>
 			</span>
 			<span class="chat--item right">
-				<span class="chat--name">aa</span>
-				<span class="chat--message">aa</span>
+				<span class="chat--name">Me</span>
+				<span class="chat--message">text test</span>
 			</span>
 		</div>
 		<input id="chatInput" type="text" />
