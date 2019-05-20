@@ -106,12 +106,56 @@ io.on('updatePlayerData', (data: any) => {
 	
 	// update player inventory
 	$('#inventory').html('');
+	let dragged: any;
 
 	data.items.map((i: any) => {
-		$('#inventory').append(`<div title="${i.info}" class="${i.cssClass}">${i.name}</div>`);
+		$('#inventory').append(`<div draggable="true" title="${i.info}" class="${i.cssClass}">${i.name}</div>`);
 	});
+
+	// sets event listeners for drag and drop
+
+	$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
+	$('#messageAttachment').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone(); console.log(dragged)});
+
+	// drop into message
+	$('#messageAttachment').on('dragover', (e: any) => {e.preventDefault()});
+	$('#messageAttachment').on('drop', (e: any) => {
+		e.preventDefault();
+		let found = false;
+		$('#messageAttachment').children('div').toArray().map( e => {
+			if($(e).attr('title') == $(dragged).attr('title')) {
+				found = true;
+			}
+		});
+		if(!found) {
+			$('#messageAttachment').append(dragged);
+			dragged = undefined;
+		}
+		$('#messageAttachment').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone();});
+
+	})
 	
-})
+	// drop into inventory
+	$('#inventory').on('dragover', (e: any) => {e.preventDefault()});
+	$('#inventory').on('drop', (e: any) => {
+		e.preventDefault();
+		let found = false;
+		$('#inventory').children('div').toArray().map( e => {
+			if($(e).attr('title') == $(dragged).attr('title')) {
+				found = true;
+			}
+		});
+		if(!found) {
+			$('#inventory').append(dragged);
+			dragged = undefined;
+		}
+		$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
+
+	});
+		
+});
+	
+
 
 
 // displays chat message

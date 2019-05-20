@@ -332,9 +332,16 @@ body {
 
 .inventory--wrapper {
 	padding: 30px;
+	
 }
 
-#inventory>div {
+#inventory {
+	background-color: gray;
+	border: 1px solid black;
+	height: 80%;
+}
+
+#inventory > div {
 	background-color: red;
 	display: inline-block;
 	width: auto;
@@ -444,3 +451,46 @@ body {
 #chat .close::before, .close::after {
 	z-index: 9;
 }
+
+#messageAttachment {
+	background-color: grey;
+	border: 1px solid black;
+	height: 50px;
+	max-width: calc(35vw - 60px);
+    position: relative;
+    overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+#messageAttachment > div {
+	white-space: nowrap;
+	width: auto;
+	overflow: auto;
+	display: inline-block;
+	zoom: 1;
+	float: none;
+	min-width: 120px;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+	
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+	background: #f1f1f1; 
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+	background: black; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+  }
