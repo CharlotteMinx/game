@@ -147,8 +147,34 @@ let sendChatMessage = () => {
 }
 
 window.onload = function() {
+	// attaches event listeners
 	$('#sendBtn').on('click', () => endTurn());
 	$('#chatSendBtn').on('click', () => sendChatMessage());
+
+	$('#toolbarMessages').on('click', () => {
+		let el = document.getElementsByClassName('message--wrapper')[0];
+		el.classList.remove('closedWindow');
+	});
+
+	$('#toolbarInventory').on('click', () => {
+		let el = document.getElementsByClassName('inventory--wrapper')[0];
+		el.classList.remove('closedWindow');
+	});
+
+	$('#toolbarChat').on('click', () => {
+		let el = document.getElementsByClassName('chat--wrapper')[0];
+		el.classList.remove('closedWindow');
+	});
+
+	$('#specialWindow').on('click', () => {
+		let el = document.getElementsByClassName('message--wrapper')[0];
+		el.classList.remove('closedWindow');
+	});
+
+	$('span.close').on('click', (e) => {
+		e.currentTarget.parentElement.classList.add('closedWindow');
+	})
+
 }
 
 

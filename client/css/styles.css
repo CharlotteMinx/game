@@ -2,10 +2,12 @@ body {
 	padding: 0px;
 	margin: 0px !important;
 }
+
 :root {
 	--fancygreen: #20C20E;
-	--darkgrey:  rgb(78, 78, 78);
-  }
+	--darkgrey: rgb(78, 78, 78);
+}
+
 /* chat messageboard */
 
 #chat {
@@ -22,7 +24,7 @@ body {
 #chat::after {
 	content: " ";
 	background-color: var(--darkgrey);
-	z-index: 44;
+	z-index: 1;
 	position: absolute;
 	bottom: 2px;
 	left: calc(50% - 20px);
@@ -53,6 +55,7 @@ body {
 	box-sizing: border-box;
 	border-radius: 10px;
 }
+
 .chat--input_container {
 	position: absolute;
 	bottom: 50px;
@@ -60,6 +63,7 @@ body {
 	left: 20px;
 	right: -20px;
 }
+
 .chat--input_container #chatSendBtn {
 	float: right;
 }
@@ -124,9 +128,11 @@ body {
 	border-radius: 10px;
 	position: relative;
 }
-.scoreboard > span {
+
+.scoreboard>span {
 	display: block;
 }
+
 #scoreboard::after {
 	content: " ";
 	position: absolute;
@@ -138,12 +144,13 @@ body {
 	z-index: -1;
 	transform: skew(20deg);
 }
+
 #scoreboard::before {
 	content: " ";
 	position: absolute;
 	top: 5px;
 	left: 5px;
-	right: -5px;
+	right: -8px;
 	bottom: -5px;
 	background-color: var(--fancygreen);
 	z-index: -1;
@@ -197,26 +204,27 @@ body {
 	box-sizing: border-box;
 }
 
-#app>.right > div {
+#app>.right>div {
 	background-color: var(--darkgrey);
 	width: 100%;
-	height: 47%;
+	height: 38%;
 	position: relative;
-	right: 10px;
+	right: 15px;
 	display: block;
 	min-width: 100%;
 	box-sizing: border-box;
-	margin-right: 10px;
+	margin-right: 15px;
 }
 
-#app>.right > div::before {
+#app>.right>div::before {
 	content: " ";
 	top: 10px;
 	bottom: -10px;
 	left: 10px;
 	right: -10px;
 	position: absolute;
-    z-index: -1;  /* to be below the parent element */
+	z-index: -1;
+	/* to be below the parent element */
 	background-color: var(--fancygreen);
 }
 
@@ -224,6 +232,7 @@ body {
 	padding: 0px;
 	margin: 0px;
 }
+
 .playerBox--wrapper {
 	position: absolute;
 	left: 0;
@@ -243,13 +252,15 @@ body {
 	left: 10px;
 	right: -10px;
 	position: absolute;
-    z-index: -1;  /* to be below the parent element */
+	z-index: -1;
+	/* to be below the parent element */
 	background-color: var(--fancygreen);
 }
 
 #playersBox span {
 	display: inline-block;
 }
+
 #playersBox .player {
 	text-transform: capitalize;
 	font-weight: 600;
@@ -259,18 +270,21 @@ body {
 	width: auto;
 	display: block;
 }
+
 #playersBox .role {
 	font-size: 11px;
 }
+
 #playersBox .role::before {
 	content: "(";
 }
+
 #playersBox .role::after {
 	content: ")";
 }
 
-#sendBtn {
-}
+#sendBtn {}
+
 .message--wrapper {
 	width: 100%;
 	height: min-content;
@@ -281,7 +295,7 @@ body {
 	width: 100%;
 }
 
-.message--attachment > div {
+.message--attachment>div {
 	background-color: red;
 	display: inline-block;
 	width: 70px;
@@ -304,27 +318,129 @@ body {
 	left: 10px;
 	right: -10px;
 	position: absolute;
-    z-index: -1;  /* to be below the parent element */
+	z-index: -1;
+	/* to be below the parent element */
 	background-color: var(--fancygreen);
 }
 
-.obejctive--wrapper > h3 {
+.obejctive--wrapper>h3 {
 	padding: 0px;
 	margin: 0px;
 }
 
-#app.onTurn .scoreboard--wrapper {
-
-}
+#app.onTurn .scoreboard--wrapper {}
 
 .inventory--wrapper {
 	padding: 30px;
 }
-#inventory > div {
+
+#inventory>div {
 	background-color: red;
 	display: inline-block;
 	width: auto;
 	margin-right: 20px;
 	white-space: nowrap;
 	padding: 5px;
+}
+
+.toolbar--wrapper {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	z-index: 4;
+	height: 140px;
+	overflow: hidden;
+}
+
+#toolbar {
+	background-color: var(--darkgrey);
+	border-radius: 4px;
+	width: 50vw;
+	position: absolute;
+	margin: auto;
+	bottom: -80px;
+	overflow: hidden;
+	height: 80px;
+	overflow: hidden;
+	transition: all 1s;
+	margin: auto;
+	box-sizing: border-box;
+	right: 25vw;
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+}
+
+.toolbar--wrapper:hover #toolbar {
+	bottom: 5px;
+}
+
+.toolbar--wrapper:hover::after {
+	bottom: 85px;
+}
+
+.toolbar--wrapper::after {
+	content: "";
+	border-bottom: 40px solid rgba(78, 78, 78, 0.5);
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	height: 0;
+	width: 100px;
+	position: absolute;
+	z-index: -1;
+	bottom: 0px;
+	transition: all 1s;
+	right: calc(50vw - 75px);
+}
+
+#toolbar > div {
+	flex: 25;
+	box-sizing: border-box;
+	margin: 10px;
+	background-color: blue;
+	text-align: center;
+}
+.close {
+	position: absolute;
+	right: 32px;
+	top: 32px;
+	width: 16px;
+	height: 16px;
+	opacity: 1;
+}
+
+.close:hover::after, .close:hover::before {
+	width: 4px;
+	left: 14px;
+}
+
+.close:before,
+.close:after {
+	position: absolute;
+	left: 15px;
+	content: ' ';
+	height: 19px;
+	width: 2px;
+	background-color: red;
+}
+
+.close:before {
+	transform: rotate(45deg);
+}
+
+.close:after {
+	transform: rotate(-45deg);
+}
+
+.closedWindow {
+	display: none !important;
+}
+#chat .close {
+	bottom: 15px;
+	top: unset;
+	left: calc(50% - 16px);
+	z-index: 9;
+}
+#chat .close::before, .close::after {
+	z-index: 9;
 }
