@@ -115,7 +115,7 @@ io.on('updatePlayerData', (data: any) => {
 	// sets event listeners for drag and drop
 
 	$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
-	$('#messageAttachment').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone(); console.log(dragged)});
+	$('#messageAttachment').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
 
 	// drop into message
 	$('#messageAttachment').on('dragover', (e: any) => {e.preventDefault()});
