@@ -10,9 +10,14 @@
   font-size: 150%;
 }
 
+@font-face {
+  font-family: "Argot";
+  src: url('./argot.ttf') format('truetype');
+}
+
 body {
   /*TODO*/
-  font-family: 'Some time later';
+  font-family: 'Argot';
 
   justify-content: center;
   align-items: center;
