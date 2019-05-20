@@ -424,7 +424,7 @@ body {
 .close {
 	position: absolute;
 	right: 32px;
-	top: 32px;
+	top: 20px;
 	width: 16px;
 	height: 16px;
 	opacity: 1;

@@ -45,9 +45,10 @@ if(lobbyId && username) {
 io.on('kickClient', (message?: string) => {
 	var url = new URL( window.location + "");
 	message = !message ? 'You were kicked from the server!' : message;
-   // document.body.innerHTML = `<div class='kickedMessage--container' >${message}</div>`;
 	alert(message);
+   // document.body.innerHTML = `<div class='kickedMessage--container' >${message}</div>`;
 	url.pathname = 'lobby';
+	
 	(window as any).location = url;
 })
 
@@ -65,18 +66,18 @@ io.on('joinedLobby', () => {
 // game loop info refresh
 io.on('gameStatus', (data: any) => {
 	// displays lobby name
-	document.getElementById('lobbyName').innerText = data.lobby.name;
+	$('#lobbyName').text(data.lobby.name);
 	
 	// displays lobby round
-	document.getElementById('roundCount').innerText = data.lobby.round;
+	$('#roundCount').text(data.lobby.round);
 
 	// displays turn info
-	document.getElementById('turnName').innerText = data.lobby.turn + "'s turn";
+	$('#turnName').text(data.lobby.turn + "'s turn");
 
 	// displays players info
 	var html = "";
 	data.lobby.players.map((p: any) => { html += `<span class="player">${p.username} <span class="role">${p.role}</span></span>`});
-	document.getElementById('playersBox').innerHTML = html;
+	$('#playersBox').html(html);
 
 	// removes turn class from app
 
