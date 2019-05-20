@@ -9,10 +9,10 @@ run 'npm install' in both server and client directory
 run command 'npm start' in both server and client directory to start hot reload and auto compile and node server
 
 ### current progress
-Created basic backbone for server - client communication.
-User can join/create lobby which attaches clients on joining and unmounts them on leaving.
-Lobby has maximum players and if remains empty for duration of time its deleted.
-Lobby data for example turn,round,players are synchronized in real time with all players in lobby.
+- Created basic backbone for server - client communication.
+- User can join/create lobby which attaches clients on joining and unmounts them on leaving.
+- Lobby has maximum players and if remains empty for duration of time its deleted.
+- Lobby data for example turn,round,players are synchronized in real time with all players in lobby.
 
 ### future
 - Add synchronisation of player data with rendering on client side.
