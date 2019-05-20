@@ -112,7 +112,7 @@ button i {
 }
 
 
-#create_game form {
+#new_game {
   background-color: var(--dark);
   padding: var(--pad);
   border-radius: 0.3rem;

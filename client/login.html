@@ -1,60 +1,69 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Page Title</title>
-        <link rel="stylesheet" href="./login.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-        <script>
-            var socket = io();
-            socket.emit('getLobbies');
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/some-time-later" type="text/css"/>
+      <link href="https://fonts.googleapis.com/css?family=Cabin:400,700|Karla:400,700|Oxygen:400,700|Raleway:400,700&amp;subset=latin-ext" rel="stylesheet">
+      
+      <title>Asymetra - Login</title>
 
-            // join lobby and redirects to game page
+      <link rel="stylesheet" href="./login.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+      <script>
+          var socket = io();
+          socket.emit('getLobbies');
 
-            socket.on('lobbiesInfo', lobbies => {
-              console.log(lobbies)
-                var html = "";
-                lobbies.map(l => {
-                    html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> <button> Join </button> </li>`;
-                });
-                document.getElementById('lobbies').innerHTML = html;
-            });
+          // join lobby and redirects to game page
 
-            // TODO display message from the server
+          socket.on('lobbiesInfo', lobbies => {
+            console.log(lobbies)
+              var html = "";
+              lobbies.map(l => {
+                  html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> <button> Join </button> </li>`;
+              });
+              document.getElementById('lobbies').innerHTML = html;
+          });
 
-            socket.on('displayMessage', message => {
-              console.log(message);
-            })
+          // TODO display message from the server
+
+          socket.on('displayMessage', message => {
+            console.log(message);
+          })
 
 
-            // joins lobby after creating it
+          // joins lobby after creating it
 
-            socket.on('createdLobby', (lobbyId) => {
-              console.log('createdLobby' + lobbyId)
-                joinLobby(lobbyId);
-            });
+          socket.on('createdLobby', (lobbyId) => {
+            console.log('createdLobby' + lobbyId)
+              joinLobby(lobbyId);
+          });
 
-            var joinLobby = function(id) {
-                var username = document.getElementById('username').value;
-                if(username !== '') {
-                    var url = new URL( window.location);
-                    url.pathname = 'game';
-                    url.searchParams.set('lobby',id);
-                    url.searchParams.set('username', username);
-                    window.location = url;
-                }
-            }
+          var joinLobby = function(id) {
+              var username = document.getElementById('username').value;
+              if(username !== '') {
+                  var url = new URL( window.location);
+                  url.pathname = 'game';
+                  url.searchParams.set('lobby',id);
+                  url.searchParams.set('username', username);
+                  window.location = url;
+              }
+
+              // else display message
+          }
+          
+          
+
+          var createLobby = function() {
+              var name = document.getElementById("lobbyname");
+              console.log(name.value);
             
-           
-
-            var createLobby = function() {
-                var name = document.getElementById("lobbyname");
-                console.log(name.value);
-              
-                if(name.value !== "") {
-                    socket.emit('createLobby', {lobbyName: name.value});
-                }
-            }
-        </script>
+              if(name.value !== "") {
+                  socket.emit('createLobby', {lobbyName: name.value});
+              }
+          }
+      </script>
     </head>
 <body class="flex_container">
   <div class="flex_container" id="user_info">
@@ -65,9 +74,9 @@
     <div class="flex_container" id="join_game">
       <p> Join a game </p>
       <ul id="lobbies">
-        <li> Game 1
+        <li> Game 1 </li>
           <button> Join </button>
-        <li> Another game
+        <li> Another game </li>
           <button> Join </button>
       </ul>
     </div>
@@ -77,7 +86,7 @@
       <div id="new_game">
         <div class="game_info">
           <label> Name </label>
-          <input type="text" name="game_name" id="lobbyname">
+          <input type="text" id="lobbyname">
         </div>
         <button onclick="createLobby()" >Create</button>
       </div>
