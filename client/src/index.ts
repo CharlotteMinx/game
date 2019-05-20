@@ -1,6 +1,21 @@
 import * as socket from 'socket.io-client';
-
+import * as $ from 'jquery';
 let io = socket();
+
+// prevents client side injection
+$.valHooks.textarea = {
+get: function( elem: any ) {
+	return elem.value.replace( /\r?\n/g, "\r\n" );
+}
+};
+
+$.valHooks.input = {
+get: function( elem: any ) {
+	return elem.value.replace( /\r?\n/g, "\r\n" );
+}
+};
+
+
 
 // gets parameters from url
 
@@ -65,14 +80,39 @@ io.on('gameStatus', (data: any) => {
 	document.getElementById('playersBox').innerHTML = html;
 });
 
+io.on('chatMessage', (data: any) => {
+	
+	if(data !== undefined) {
+		
+		let chatBox = $('#chatContainer');
+		let html = `<span class="chat--item ${data.isMine ? 'right' : ''}">
+			<span class="chat--name">${data.from}</span>
+			<span class="chat--message">${data.message}</span>
+			</span>`;
+		chatBox.append(html);	
+	}
+});
+
+// ends player turn 
 let endTurn = () => {
 	io.emit('endTurn');
 }
 
-window.onload = function() {
-	document.getElementById("sendBtn").addEventListener('click', () => endTurn());
-
+// send chat message to server
+let sendChatMessage = () => {
+	
+	let value = $('#chatInput').val();
+	$('#chatInput').val('');
+	alert(value);
+	io.emit('sendChatMessage', value);
 }
+
+window.onload = function() {
+	$('#sendBtn').on('click', () => endTurn());
+	$('#chatSendBtn').on('click', () => sendChatMessage());
+}
+
+
 // sends information of client leaving to detach player from lobby
 window.onbeforeunload = function(){
 	io.emit('clientLeaving');
