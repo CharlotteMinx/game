@@ -1,7 +1,21 @@
+@font-face {
+	font-family: "Argot";
+	src: url('./argot.ttf') format('truetype');
+}
+@font-face {
+	font-family: "Hacked";
+	src: url('./HACKED.ttf') format('truetype');
+	
+}
+
 body {
 	padding: 0px;
 	margin: 0px !important;
+	font-family: 'Hacked';
+	letter-spacing: 2px;
 }
+
+
 
 :root {
 	--fancygreen: #20C20E;
