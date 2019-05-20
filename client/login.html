@@ -11,10 +11,12 @@
             // join lobby and redirects to game page
 
             socket.on('lobbiesInfo', lobbies => {
-              console.log(lobbies)
                 var html = "";
                 lobbies.map(l => {
-                    html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> <button> Join </button> </li>`;
+                    html += `<li onClick=(joinLobby(${l.id}))>
+                      <span class="lobbyName">${l.name}</span> 
+                      <span class="lobbyPlayers">${l.playerCount}/${l.maxPlayers}</span>
+                      <button> Join </button> </li>`;
                 });
                 document.getElementById('lobbies').innerHTML = html;
             });
