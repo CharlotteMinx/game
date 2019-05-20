@@ -2,26 +2,66 @@ body {
 	padding: 0px;
 	margin: 0px !important;
 }
-
+:root {
+	--fancygreen: #20C20E;
+	--darkgrey:  rgb(78, 78, 78);
+  }
 /* chat messageboard */
 
 #chat {
-	background-color: red;
+	background-color: grey;
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
 	width: 300px;
-	height: 400px;
+	height: 440px;
 	border-radius: 10px;
-	z-index: 4;
+	z-index: 5;
 }
 
-.chat--container {
+#chat::after {
+	content: " ";
+	background-color: var(--darkgrey);
+	z-index: 44;
+	position: absolute;
+	bottom: 2px;
+	left: calc(50% - 20px);
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+
+#chat::before {
+	content: " ";
+	background-color: var(--darkgrey);
+	z-index: 44;
+	position: absolute;
+	right: -5px;
+	width: 10px;
+	height: 40px;
+	top: 20%;
+	border-radius: 4px;
+	z-index: -1;
+}
+
+.chat--body_container {
 	background-color: blue;
 	width: calc(100% - 30px);
 	height: calc(100% - 60px);
 	margin: 15px;
+	padding-bottom: 40px;
+	box-sizing: border-box;
 	border-radius: 10px;
+}
+.chat--input_container {
+	position: absolute;
+	bottom: 50px;
+	width: calc(100% - 40px);
+	left: 20px;
+	right: -20px;
+}
+.chat--input_container #chatSendBtn {
+	float: right;
 }
 
 .chat--item {
@@ -61,7 +101,6 @@ body {
 	flex-wrap: nowrap;
 	flex-direction: row;
 	right: 0px;
-	background-color: pink;
 }
 
 .scoreboard--wrapper {
@@ -70,7 +109,6 @@ body {
 	left: 0px;
 	right: 0px;
 	z-index: 5;
-	background-color: blue;
 	height: 70px;
 }
 
@@ -80,16 +118,43 @@ body {
 	width: auto;
 	text-align: center;
 	font-size: 25px;
-	padding: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
 	font-weight: 900;
-	background-color: red;
 	border-radius: 10px;
+	position: relative;
 }
+.scoreboard > span {
+	display: block;
+}
+#scoreboard::after {
+	content: " ";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--darkgrey);
+	z-index: -1;
+	transform: skew(20deg);
+}
+#scoreboard::before {
+	content: " ";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: -5px;
+	bottom: -5px;
+	background-color: var(--fancygreen);
+	z-index: -1;
+	transform: skew(20deg);
+}
+
 
 .window--wrapper {
 	position: relative;
 	height: 70vh;
-	background-color: rgba(30, 40, 30, 0.2);
+	background-color: var(--darkgrey);
 	top: 150px;
 }
 
@@ -118,7 +183,6 @@ body {
 	z-index: 3;
 	height: 100%;
 	display: flex;
-	background-color: grey;
 	flex: 65;
 }
 
@@ -126,17 +190,42 @@ body {
 	position: relative;
 	display: flex;
 	z-index: 3;
-	height: 100%;
-	background-color: greenyellow;
+	height: calc(100% - 70px);
 	flex: 35;
+	flex-wrap: wrap;
+	margin-top: 70px;
+	box-sizing: border-box;
 }
+
+#app>.right > div {
+	background-color: var(--darkgrey);
+	width: 100%;
+	height: 47%;
+	position: relative;
+	right: 10px;
+	display: block;
+	min-width: 100%;
+	box-sizing: border-box;
+	margin-right: 10px;
+}
+
+#app>.right > div::before {
+	content: " ";
+	top: 10px;
+	bottom: -10px;
+	left: 10px;
+	right: -10px;
+	position: absolute;
+    z-index: -1;  /* to be below the parent element */
+	background-color: var(--fancygreen);
+}
+
 .playerBox--wrapper h3 {
 	padding: 0px;
 	margin: 0px;
 }
 .playerBox--wrapper {
 	position: absolute;
-	z-index: 5;
 	left: 0;
 	top: 40%;
 	list-style-type: none;
@@ -144,9 +233,20 @@ body {
 	margin: 0px;
 	border: 1px solid black;
 	padding: 10px;
-	background-color: red;
-	
+	background-color: var(--darkgrey);
 }
+
+.playerBox--wrapper::before {
+	content: " ";
+	top: 10px;
+	bottom: -10px;
+	left: 10px;
+	right: -10px;
+	position: absolute;
+    z-index: -1;  /* to be below the parent element */
+	background-color: var(--fancygreen);
+}
+
 #playersBox span {
 	display: inline-block;
 }
@@ -170,12 +270,8 @@ body {
 }
 
 #sendBtn {
-	position: absolute;
-	top: 40%;
-	left: 65%;
 }
 .message--wrapper {
-	margin-top: 100px;
 	width: 100%;
 	height: min-content;
 	padding: 30px;
@@ -196,22 +292,32 @@ body {
 .obejctive--wrapper {
 	position: absolute;
 	top: 25%;
-	background-color: yellow;
+	background-color: var(--darkgrey);
 	padding: 10px;
 	border: 1px solid black;
 }
+
+.obejctive--wrapper::before {
+	content: " ";
+	top: 10px;
+	bottom: -10px;
+	left: 10px;
+	right: -10px;
+	position: absolute;
+    z-index: -1;  /* to be below the parent element */
+	background-color: var(--fancygreen);
+}
+
 .obejctive--wrapper > h3 {
 	padding: 0px;
 	margin: 0px;
 }
 
 #app.onTurn .scoreboard--wrapper {
-	background: black;
+
 }
 
 .inventory--wrapper {
-	position: absolute;
-	top: 60%;
 	padding: 30px;
 }
 #inventory > div {
