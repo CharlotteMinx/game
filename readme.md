@@ -1,4 +1,4 @@
-# Network learning game
+# Asymetra - Network learning game
 Using webpack, typescript, socket.io, express, hot reload, node.js, and tsloader!
 
 ## instalation
