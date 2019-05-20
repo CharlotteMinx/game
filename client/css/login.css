@@ -60,7 +60,7 @@ button {
   align-items: center;
   justify-content: center;
   
-  font-family: "Some time later";
+  font-family: 'Argot';
   font-size: 1.2rem;
 }
 
@@ -83,7 +83,7 @@ button i {
   text-align: center;
 }
 
-#games li {
+#lobbies li {
   background-color: var(--dark);
   color: var(--light);
   
@@ -100,20 +100,25 @@ button i {
 }
 
 
-#games li button {
+#lobbies button {
   width: 4rem;
   background-color: var(--main);
   color: var(--darkish);
 }
 
 
-#join_game {
-  overflow-y: auto;
-}
+#lobbies {
+  max-height: 50vh;
+  overflow: auto;
 
-#join_game ul {
   padding: 0;
   margin: 0;
+}
+
+.lobby {
+  display: flex;
+
+  justify-content: space-between;
 }
 
 
@@ -171,3 +176,29 @@ input {
   width: 50%;
   background-color: var(--darkish);
 }
+
+.vline {
+  width: 2px;
+  height: 90%;
+  margin: 5%;
+  background-color: var(--light);
+}
+
+/*
+#user_info::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -10px;
+  right: -10px;
+  z-index: 3;
+  background-color: var(--main);
+}
+#user_info {
+  position: relative;
+  background-color: black;
+  z-index: 10;
+}
+*/

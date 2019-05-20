@@ -21,7 +21,14 @@
             console.log(lobbies)
               var html = "";
               lobbies.map(l => {
-                  html += `<li onClick=(joinLobby(${l.id}))><span class="name">${l.name} <b>${l.playerCount}/${l.maxPlayers}</b> <button> Join </button> </li>`;
+                  html += `
+                  <li class="lobby" onClick=(joinLobby(${l.id}))>
+                    <span id="lobby_name">${l.name} </span>
+                    <div class="vline"></div>
+                    <span id="lobby_fill">${l.playerCount}/${l.maxPlayers}</span> 
+                    <div class="vline"></div>
+                    <button> Join </button> 
+                  </li>`;
               });
               document.getElementById('lobbies').innerHTML = html;
           });
@@ -74,10 +81,6 @@
     <div class="flex_container" id="join_game">
       <p> Join a game </p>
       <ul id="lobbies">
-        <li> Game 1 </li>
-          <button> Join </button>
-        <li> Another game </li>
-          <button> Join </button>
       </ul>
     </div>
 
