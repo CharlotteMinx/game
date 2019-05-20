@@ -9,6 +9,7 @@ var http = require("http").Server(app);
 
 app.use(express.static(path.resolve('./../client/build/')));
 app.use(express.static(path.resolve('./../client/css/')));
+app.use(express.static(path.resolve('./../client/media/')));
 // login page
 
 router.get("/login", (req: any, res: any) => {
