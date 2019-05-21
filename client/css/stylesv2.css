@@ -1,0 +1,70 @@
+html {
+  box-sizing: border-box;
+}
+* {
+  box-sizing: inherit;
+}
+body {
+  font-family: 'Karla', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+button,
+input,
+a {
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+}
+.flex_container {
+  display: flex;
+  margin: 0;
+}
+.hidden {
+  display: none;
+}
+button {
+  font-weight: bold;
+  padding: 0.5rem;
+  cursor: pointer;
+  height: 2.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+button i {
+  padding-right: 0.5rem;
+}
+#app {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.scoreboard--wrapper {
+  width: 100%;
+  height: 2rem;
+  padding: 0.5rem;
+  display: flex;
+  background-color: #26212B;
+  justify-content: center;
+  align-items: center;
+  color: #CCB6E0;
+}
+#scoreboard {
+  display: flex;
+  justify-content: space-between;
+}
+.left {
+  display: flex;
+  height: 100vh;
+  width: 50%;
+  background-color: #A895BA;
+}
+.right {
+  display: flex;
+  height: 100vh;
+  width: 50%;
+  background-color: #A895BA;
+  background-color: #CCB6E0;
+}

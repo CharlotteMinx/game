@@ -4,7 +4,7 @@
 <head>
 	<script type="text/javascript" src="./main.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="./styles.css">
+	<link rel="stylesheet" href="./stylesv2.css">
 	<!-- Fonts-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link
@@ -15,27 +15,29 @@
 </head>
 
 <body>
+   <!-- scoreboard -->
+   <div class="scoreboard--wrapper">
+      <div class="scoreboard" id="scoreboard">
+         <span id="lobbyName">Lobby</span>
+         <span id="turnName"></span>
+         <span id="roundCount">0</span>
+      </div>
+   </div>
 
 	<!-- main app -->
 	<div id="app">
 
-		<!-- scoreboard -->
-		<div class="scoreboard--wrapper">
-			<div class="scoreboard" id="scoreboard">
-				<span id="lobbyName">Lobby</span>
-				<span id="turnName"></span>
-				<span id="roundCount">0</span>
-			</div>
-		</div>
-
 		<!-- left side -->
 		<div class="left">
-			
+
 			<!-- objective -->
-			<div class="obejctive--wrapper">
+			<div class="objective--wrapper">
 				<h3>Objective</h3>
 				<div id="objective">Win.</div>
-				<div><span>Your role is</span> <span id="role"></span></div>
+				<div>
+					<span>Your role is</span>
+					<span id="role"></span>
+				</div>
 			</div>
 
 			<!-- players -->
@@ -46,7 +48,7 @@
 
 			<div class="message-wrapper">
 				<div class="message" id="message">
-					
+
 				</div>
 			</div>
 		</div>
@@ -71,10 +73,10 @@
 										<option value="option2">Option 2</option>
 								</select>
 						</div>
-						
+
 					</div>
 					<div id="messageAttachment" class="message--attachment">
-						<div draggable="true" class="key" title="key" >key</div> 
+						<div draggable="true" class="key" title="key" >key</div>
 						<div draggable="true" class="credit-card" title="card">card</div>
 						<div draggable="true"  title="secret" class="secret-text">secret</div>
 					</div>
@@ -113,9 +115,9 @@
 			<input id="chatInput" type="text" />
 			<button id="chatSendBtn">send</button>
 		</div>
-	
+
 	</div>
-	
+
 	<div class="toolbar--wrapper">
 		<div id="toolbar" class="toolbar">
 			<div id="toolbarMessages">Messages</div>

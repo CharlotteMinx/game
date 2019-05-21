@@ -2,6 +2,7 @@
 	font-family: "Argot";
 	src: url('./argot.ttf') format('truetype');
 }
+
 @font-face {
 	font-family: "Hacked";
 	src: url('./HACKED.ttf') format('truetype');
@@ -11,7 +12,7 @@
 body {
 	padding: 0px;
 	margin: 0px !important;
-	font-family: 'Hacked';
+	font-family: 'Karla';
 	letter-spacing: 2px;
 }
 
