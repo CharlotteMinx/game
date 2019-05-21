@@ -27,11 +27,13 @@ export type Item = {
     info: string;
     cssClass: string;
     data: string;
-    action: Action;
 }
 
-export type Action = {
-
+export type Message = {
+    sender: string;
+    target: string;
+    data: string;
+    items: Array<Item>;
 }
 
 export type joinLobbyMessage = {

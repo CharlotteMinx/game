@@ -1,6 +1,5 @@
 
 import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item} from './types';
-import { emit } from 'cluster';
 import * as moment from 'moment';
 import { Socket } from 'dgram';
 
@@ -40,7 +39,6 @@ export class SocketServer {
         let newLobbies: Array<Lobby> = [];
         
         this.lobbies.map(l => {
-            console.log((moment(l.updated).add(5, 'minutes').isAfter(moment())))
             if(l.players.length > 0 || (moment(l.updated).add(30, 'seconds').isAfter(moment())))  newLobbies.push(l);
         });
         this.lobbies = newLobbies;
@@ -62,18 +60,72 @@ export class SocketServer {
         return res;
     }
 
-    getStandartItemsByRole = (role: string): Array<Item> => {
+    getDefaultItemsByRole = (role: string): Array<Item> => {
         let items: Array<Item> = [];
 
-        for(let i = 0; i < 5; i++ ) {
-            items.push({
-                name: 'itemname',
-                info: 'useless',
-                cssClass: 'testitem',
-                data: 'none',
-                action: {},
-            })
-        }
+        switch(role) {
+            case "alice":
+                items.push({
+                    name: 'Credit card',
+                    info: "Alices credit card.",
+                    cssClass: 'creditCard',
+                    data: '',
+                });
+                items.push({
+                    name: 'Private key - alice',
+                    info: "Alices private key.",
+                    cssClass: 'privateKey',
+                    data: '',
+                });
+                items.push({
+                    name: 'Public key - alice',
+                    info: "Alices public key.",
+                    cssClass: 'publicKey',
+                    data: '',
+                });
+              break;
+            case "bob":
+                items.push({
+                    name: 'Secret text',
+                    info: "Bobs Secret text.",
+                    cssClass: 'secretText',
+                    data: '',
+                });
+                items.push({
+                    name: 'Private key - bob',
+                    info: "Bobs private key.",
+                    cssClass: 'privateKey',
+                    data: '',
+                });
+                items.push({
+                    name: 'Public key - bob',
+                    info: "Bobs public key.",
+                    cssClass: 'publicKey',
+                    data: '',
+                });
+              break;
+            case "hacker":
+                items.push({
+                    name: 'Secret text',
+                    info: "Bobs Secret text.",
+                    cssClass: 'secretText',
+                    data: '',
+                });
+                items.push({
+                    name: 'Private key - hacker',
+                    info: "Hackers private key.",
+                    cssClass: 'privateKey',
+                    data: '',
+                });
+                items.push({
+                    name: 'Public key - hacker',
+                    info: "Hackers public key.",
+                    cssClass: 'publicKey',
+                    data: '',
+                });
+              break;
+          }
+
         return items;
     }
     
@@ -102,6 +154,32 @@ export class SocketServer {
         return res;
     }
 
+
+    changeTurnBasedOnRole = (socket: any) => {
+        let lobby = this.getLobbyBySocketId(socket.id);
+        if(lobby){
+                let player: Player = lobby.players.find(p => {return p.id == socket.id});
+                if(player.id == lobby.turn) {
+                    if(lobby.players.length == lobby.maxPlayers) {
+                        let nextRoleIndex = this.roles.indexOf(player.role)+1;
+                        nextRoleIndex = nextRoleIndex > this.roles.length -1 ? 0 : nextRoleIndex;
+                        let newPlayer = lobby.players.find(p => {return p.role == this.roles[nextRoleIndex]});
+                        lobby.turn = newPlayer.id;
+                        lobby.round++;
+                        lobby.players.map( p => {
+                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
+                        });
+                        this.io.to(`${lobby.turn}`).emit(' ', true);
+                    } else {
+                        this.sendMessageToClient(socket, "Wait till the lobby is full!");
+                    }
+                } else {
+                    this.kickClient(socket, "Unexpected error");
+                }
+            } else {
+                this.kickClient(socket, "Unexpected error");
+            }
+    }
     // return overall game lobby status
 
     getGameStatus = (socket: any) => {
@@ -114,12 +192,13 @@ export class SocketServer {
                     role: p.role,
                 });
             });
+            let playerOnTurn = lobby.players.find(p => p.id == lobby.turn);
             let res = {
                 lobby: {
                     players: players,
                     name: lobby.name,
                     round: lobby.round,
-                    turn: lobby.players.find(p => p.id == lobby.turn).username,
+                    turn: playerOnTurn ? playerOnTurn.username : '',
                 }
             };
             return res;
@@ -143,8 +222,28 @@ export class SocketServer {
                 socket.emit("lobbiesInfo",  this.getLobies(socket));
             });
 
-            // assigns client to lobby
+           
+            // sends message to other players in lobby
 
+            socket.on('sendChatMessage', (message: string) => {
+                let lobby = this.getLobbyBySocketId(socket.id);
+                let username = lobby.players.find(p => p.id == socket.id).username;
+                console.log(username + ": " +message);
+                if(username) {
+                    lobby.players.map(p => {
+                        if(p.id == socket.id) {
+                            this.io.to(`${p.id}`).emit('chatMessage',{message: message, from: username, isMine: true })
+                        } else {
+                            this.io.to(`${p.id}`).emit('chatMessage',{message: message, from: username, isMine: false })
+                        }
+                    })
+                } else {
+                    this.sendMessageToClient(socket,'Error has occured when sending message.')
+                }
+                
+            });
+
+            // assigns client to lobby
             socket.on('joinLobby', (data: joinLobbyMessage) => {
                 let kicked = false;
 
@@ -171,7 +270,7 @@ export class SocketServer {
                             socket: socket,
                             username: data.client.username,
                             role: this.roles[i],
-                            items: this.getStandartItemsByRole(this.roles[i]),
+                            items: this.getDefaultItemsByRole(this.roles[i]),
                             objective: this.getObjectiveByRole(this.roles[i]),
                         };
                         if(lobby.players.length == 0) lobby.turn = newPlayer.id;
@@ -196,25 +295,31 @@ export class SocketServer {
             });
 
 
-            socket.on('endTurn', () => {
+            // sends player data to client
+
+            socket.on('requestPlayerData', () => {
                 let lobby = this.getLobbyBySocketId(socket.id);
-                let player: Player = lobby.players.find(p => {return p.id == socket.id});
-                if(player.id == lobby.turn) {
-                    if(lobby.players.length == lobby.maxPlayers) {
-                        let nextRoleIndex = this.roles.indexOf(player.role)+1;
-                        nextRoleIndex = nextRoleIndex > this.roles.length -1 ? 0 : nextRoleIndex;
-                        let newPlayer = lobby.players.find(p => {return p.role == this.roles[nextRoleIndex]});
-                        lobby.turn = newPlayer.id;
-                        console.log(lobby.turn);
-                        lobby.players.map( p => {
-                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
-                        });
-                    } else {
-                        this.sendMessageToClient(socket, "Wait till the lobby is full!");
+                let player: Player = lobby.players.find(p => p.id == socket.id);
+                if(player) {
+                    let res = {
+                        objective: player.objective,
+                        name: player.username,
+                        role: player.role,
+                        items: player.items,
+                        isOnTurn: lobby.turn == player.id ? true : false,
                     }
+                    socket.emit('updatePlayerData', res);
                 } else {
-                    this.kickClient(socket, "Unexpected error");
+                    this.kickClient(socket, 'An error has occured when requesting player data from server.');
                 }
+               
+            });
+
+
+
+            // ends turn of player
+            socket.on('endTurn', () => {
+                this.changeTurnBasedOnRole(socket);
             });
 
             // creates new lobby
@@ -240,13 +345,16 @@ export class SocketServer {
                 this.lobbies.map( (lobby: Lobby) => {
                     let players: Array<Player> = [];
                     lobby.players.map((player: Player) => {
-                       console.log(player.id + " vs " + socket.id)
+                      
                         if(player.id != socket.id) {
                             players.push(player);
                         } else {
                             disconectedPlayer = player;
                         }
-                       
+                        // changes turn to other player if leaving is on turn
+                        if(lobby.turn = socket.id) {
+                            this.changeTurnBasedOnRole(socket);
+                        }
                     });
                     lobby.updated =  moment().toDate();
                     lobby.players = players;
