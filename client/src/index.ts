@@ -91,6 +91,7 @@ io.on('gameStatus', (data: any) => {
 // updated and displays player data
 io.on('updatePlayerData', (data: any) => {
 
+	
 	//displays objective
 	$('#objective').html(data.objective);
 
@@ -107,14 +108,22 @@ io.on('updatePlayerData', (data: any) => {
 	
 	// update player inventory
 	$('#inventory').html('');
-	let dragged: any;
 
 	data.items.map((i: any) => {
 		$('#inventory').append(`<div draggable="true" title="${i.info}" class="${i.cssClass}">${i.name}</div>`);
 	});
 
-	// sets event listeners for drag and drop
+	setEventListenersForDaD();
+	console.log(data.items)
+});
 
+
+// sets event listeners for drag and drop
+
+let setEventListenersForDaD = () => {
+	
+
+	let dragged: any;
 	$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
 	$('#messageAttachment').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
 
@@ -153,9 +162,21 @@ io.on('updatePlayerData', (data: any) => {
 		$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
 
 	});
-		
+}
+
+
+io.on('renderPacketMessage', (data: any ) => {
+
+
 });
 	
+
+let sendPacketMessage = () => {
+	let to;
+	let from;
+	let message;
+	let attachments;
+} 
 
 
 

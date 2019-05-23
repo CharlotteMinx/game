@@ -60,6 +60,19 @@ export class SocketServer {
         return res;
     }
 
+
+    generateUniqId = (field?: any): number => {
+        let res = Math.floor(Math.random()*90000) + 10000;
+        
+        while(field.find((n: any) => n.id == res)) {
+            res = Math.floor(Math.random()*90000) + 10000;
+        }
+        console.log(res);
+        return res;
+
+    }
+
+
     getDefaultItemsByRole = (role: string): Array<Item> => {
         let items: Array<Item> = [];
 
@@ -69,18 +82,21 @@ export class SocketServer {
                     name: 'Credit card',
                     info: "Alices credit card.",
                     cssClass: 'creditCard',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Private key - alice',
                     info: "Alices private key.",
                     cssClass: 'privateKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Public key - alice',
                     info: "Alices public key.",
                     cssClass: 'publicKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
               break;
@@ -89,18 +105,21 @@ export class SocketServer {
                     name: 'Secret text',
                     info: "Bobs Secret text.",
                     cssClass: 'secretText',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Private key - bob',
                     info: "Bobs private key.",
                     cssClass: 'privateKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Public key - bob',
                     info: "Bobs public key.",
                     cssClass: 'publicKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
               break;
@@ -109,18 +128,21 @@ export class SocketServer {
                     name: 'Secret text',
                     info: "Bobs Secret text.",
                     cssClass: 'secretText',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Private key - hacker',
                     info: "Hackers private key.",
                     cssClass: 'privateKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Public key - hacker',
                     info: "Hackers public key.",
                     cssClass: 'publicKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
               break;
@@ -154,6 +176,14 @@ export class SocketServer {
         return res;
     }
 
+    // retursn all items that player should have access to
+
+    getAllPlayerItems = (player: Player): Array<Item> => {
+        let items = player.items;
+        items = [...items, ...player.message.items];
+        return items;
+
+    }
 
     changeTurnBasedOnRole = (socket: any) => {
         let lobby = this.getLobbyBySocketId(socket.id);
@@ -180,6 +210,8 @@ export class SocketServer {
                 this.kickClient(socket, "Unexpected error");
             }
     }
+
+    
     // return overall game lobby status
 
     getGameStatus = (socket: any) => {
@@ -272,6 +304,7 @@ export class SocketServer {
                             role: this.roles[i],
                             items: this.getDefaultItemsByRole(this.roles[i]),
                             objective: this.getObjectiveByRole(this.roles[i]),
+                            message: null,
                         };
                         if(lobby.players.length == 0) lobby.turn = newPlayer.id;
                         lobby.players.push(newPlayer);
@@ -292,6 +325,11 @@ export class SocketServer {
                 } else {
                     this.kickClient(socket, "Lobby was not found.");
                 }
+            });
+
+
+            socket.on('sendPacketMessage', (data: any) => {
+                
             });
 
 
@@ -329,11 +367,12 @@ export class SocketServer {
                     players: [],
                     round: 0,
                     name: data.lobbyName,
-                    lobbyId: this.lobbies.length > 0 ? this.lobbies[this.lobbies.length-1].lobbyId + 1 : 0,
+                    lobbyId: this.generateUniqId(this.lobbies),
                     maxPlayers: 3,
                     updated: moment().toDate(),
-                    turn: '',
+                    turn: 0,
                 }
+                console.log('Created lobby' + newLobby.name + "#" + newLobby.lobbyId);
                 socket.emit('createdLobby', newLobby.lobbyId);
                 this.lobbies.push(newLobby);
             });

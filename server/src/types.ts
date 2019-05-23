@@ -8,17 +8,18 @@ export type Lobby = {
     maxPlayers: number;
     lobbyId: number;
     updated: Date;
-    turn: string;
+    turn: number;
 }
 
 
 export type Player = {
-    id: string;
+    id: number;
     username: string;
     role: string,
     socket: Socket;
     items: Array<Item>;
     objective: string;
+    message: Message | null;
 }
 
 
@@ -27,6 +28,7 @@ export type Item = {
     info: string;
     cssClass: string;
     data: string;
+    id: number;
 }
 
 export type Message = {

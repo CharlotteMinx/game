@@ -64,9 +64,10 @@
 
           var createLobby = function() {
               var name = document.getElementById("lobbyname");
-              console.log(name.value);
+              
             
               if(name.value !== "") {
+                console.log(name.value);
                   socket.emit('createLobby', {lobbyName: name.value});
               }
           }
