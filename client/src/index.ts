@@ -45,7 +45,7 @@ if(lobbyId && username) {
 io.on('kickClient', (message?: string) => {
 	var url = new URL( window.location + "");
 	message = !message ? 'You were kicked from the server!' : message;
-	alert(message);
+	//alert(message);
    // document.body.innerHTML = `<div class='kickedMessage--container' >${message}</div>`;
 	url.pathname = 'lobby';
 	
@@ -167,8 +167,8 @@ let setEventListenersForDaD = () => {
 
 		if(!alreadyExist && $(dragged).attr('itemId')) {
 			$('#inventory').append(dragged);
+			io.emit('addItemToPlayerInvenotory', $(dragged).attr('itemId'));
 			dragged = undefined;
-			//io.emit('addItemToPlayerInvenotory', $(dragged).attr('itemId'));
 		}
 		$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
 
@@ -177,15 +177,14 @@ let setEventListenersForDaD = () => {
 
 
 io.on('renderPacketMessage', (data: any ) => {
-	console.log(data);
 	let sender = $('#sender');
 	let target = $('#target');
 	sender.empty();
 	target.empty();
 	data.players.map((p: any) => {
 		//<option value="option2">Option 2</option>
-		sender.append(`<option selected="${ p == data.sender ? "selected" : "false"} "value="${p}">${p}</option>`);
-		target.append(`<option selected="${ p == data.target ? "selected" : "false"} "value="${p}">${p}</option>`);
+		sender.append(`<option ${ p == data.sender ? `selected="selected` : undefined} "value="${p}">${p}</option>`);
+		target.append(`<option ${ p == data.target ? `selected="selected` : undefined} "value="${p}">${p}</option>`);
 
 	});
 	$('#messageBody').val(data.data);
@@ -193,6 +192,8 @@ io.on('renderPacketMessage', (data: any ) => {
 	data.items.map((i: any) => {
 		$('div#messageAttachment').append(`<div draggable="true" title="${i.info}"  itemId="${i.id}" class="${i.cssClass}">${i.name}#${i.id}</div>`);
 	})
+	setEventListenersForDaD();
+	
 });
 	
 
@@ -228,7 +229,7 @@ let sendPacketMessage = () => {
 		data: data,
 		items: attachments,
 	}
-
+	console.log(message);
 	io.emit('sendPacketMessage', message);
 	
 } 
@@ -238,7 +239,7 @@ io.on('clearPacketMessage', () => {
 	$('#sender').val('');
 	$('#target').val('');
 	$('#messageBody').val('');
-	$('div#messageAttachment').html = null;
+	$('div#messageAttachment').html('');
 });
 
 

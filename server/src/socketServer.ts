@@ -130,9 +130,9 @@ export class SocketServer {
               break;
             case "hacker":
                 items.push({
-                    name: 'Secret text',
-                    info: "Bobs Secret text.",
-                    cssClass: 'secretText',
+                    name: 'Hackers pride',
+                    info: "The pride of mighy hacker.",
+                    cssClass: 'pride',
                     id: this.generateUniqId(items),
                     data: '',
                 });
@@ -201,40 +201,19 @@ export class SocketServer {
     // returns all items that player should have access to
 
     getAllPlayerItems = (player: Player): Array<Item> => {
-        let items = player.items;
-        if(player.message !== null) items = [...items, ...player.message.items];
+        let items: Array<Item> = player.items;
+        if(player.message !== null) items = [...player.items, ...player.message.items];
+        console.log(items)
         return items;
 
     }
 
-    changeTurnBasedOnRole = (socket: any) => {
-        console.log('change turn')
-        let lobby = this.getLobbyBySocketId(socket.id);
-        if(lobby){
-                let player = this.getPlayerBySocket(socket);
-                let nextRoleIndex = this.roles.indexOf(player.role)+1;
-                nextRoleIndex = nextRoleIndex > this.roles.length -1 ? 0 : nextRoleIndex;
-                let newPlayer = lobby.players.find(p => {return p.role == this.roles[nextRoleIndex]});
-                lobby.turn = newPlayer.id;
-                lobby.round++;
-                lobby.players.map( p => {
-                    this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
-                });
-                this.io.to(`${lobby.turn}`).emit(' ', true);
-                
-            } else {
-                this.kickClient(socket, "Unexpected error");
-            }
-    }
-    
     // return overall game lobby status
 
     getGameStatus = (socket: any) => {
         let lobby: Lobby = this.getLobbyBySocketId(socket.id);
         let players: any = [];
         if(lobby) {
-            console.log('game status') 
-            console.log(lobby)
             lobby.players.map((p: Player) => {
                 players.push({
                     username: p.username,
@@ -314,16 +293,20 @@ export class SocketServer {
             })
 
             socket.on('addItemToPlayerInvenotory', (itemId: number) => {
-                console.log('adding item to player inv ' )
+                console.log('adding item to player inv ' + itemId)
                 let player =  this.getPlayerBySocket(socket);
-                let items = this.getAllPlayerItems(player);
+                let allItems = this.getAllPlayerItems(player);
+                
                 if(player.items.find(i => i.id == itemId)) {
                     this.sendMessageToClient(socket, 'You already have this item in your inventory.')
-                } else if(items.find(i => i.id == itemId)){
-                    player.items.push(items.find(i => i.id == itemId));
-                } else {
+                } else if(!allItems.find(i => i.id == itemId)){
                     this.sendMessageToClient(socket, 'Errow when adding item to invenotory has occures.')
+                } else {
+                    console.log("adding " + player.message.items.find(i => i.id == itemId).name);
+                    player.items.push(player.message.items.find(i => i.id == itemId));
                 }
+                console.log(!allItems.find(i => i.id == itemId) + "at add item to inv");
+                console.log(player.items);
             })
 
             // assigns client to lobby
@@ -383,22 +366,60 @@ export class SocketServer {
 
 
             socket.on('sendPacketMessage', (data: any) => {
-               
                 if(data.sender && data.target && data.data !== undefined && data.items !== undefined) {
                     let lobby = this.getLobbyBySocketId(socket.id);
                     // checks if user is on turn
-                    if(lobby.turn == socket.id) {
+                    if(lobby.players.length < lobby.maxPlayers) {
+                        this.sendMessageToClient(socket, "Wait till the lobby is full.");
+                    } else if(data.target == data.sender) {
+                        this.sendMessageToClient(socket, "You cant send message to urself.");
+                    } else if(lobby.turn == socket.id) {
 
-                        // changes turn
-                        //this.changeTurnBasedOnRole(socket);
+                        this.getPlayerBySocket(socket).message = null;
+                        let senderPlayer = this.getPlayerBySocket(socket);
+                        let targetPlayer = lobby.players.find(p => p.username == data.target);
+                        
+                        // let hacker get the turn if message is from hacker just changes turn to target
+                        if(targetPlayer.role !== 'hacker' && senderPlayer.role !== 'hacker') {
+                            let hacker = lobby.players.find(p => p.role == 'hacker');
+                            lobby.turn = hacker.id;
+                        } else {
+                            lobby.turn = targetPlayer.id;
+                        }
 
-                                            
-                        let messageWithPlayers: any = data;
-                        console.log(data);
-                        messageWithPlayers.players = [];
-                        lobby.players.map(p => messageWithPlayers.players.push(p.username));
-                        this.io.to(`${lobby.turn}`).emit('renderPacketMessage', messageWithPlayers);
+                        // clear senders message html
+                        socket.emit('clearPacketMessage');
+                        // gets player names
+                        let playerNames: Array<string> = [];
+                        lobby.players.map(p => playerNames.push(p.username));
+                        // gets items by id
+                        let foundItems: Array<Item> = [];
+                        
+                        this.getAllPlayerItems(senderPlayer).map(i => {
+                            if(data.items.indexOf(i.id+'') > -1 && foundItems.indexOf(i) == -1) {
+                                foundItems.push(i);
+                            }});
 
+                        let newMessage: Message = {
+                            sender: data.sender,
+                            target: data.target,
+                            data: data.data,
+                            items: foundItems,
+                            players: playerNames,
+                        };
+
+                        console.log('message items diff' + data.items.length + ' vs ' + newMessage.items.length);
+                        
+                        lobby.turn++;
+                        
+                        this.io.to(`${lobby.turn}`).emit('clearPacketMessage');
+                        this.io.to(`${lobby.turn}`).emit('renderPacketMessage', newMessage);
+                        
+                        lobby.players.map(p => {
+                            p.id == lobby.turn ? p.message = newMessage: undefined;
+                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(p.socket));
+                            
+                        });
                     } else {
                         this.sendMessageToClient(socket, "It's not your turn!");
                     }
