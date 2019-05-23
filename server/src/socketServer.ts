@@ -1,5 +1,5 @@
 
-import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item} from './types';
+import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item, Message} from './types';
 import * as moment from 'moment';
 import { Socket } from 'dgram';
 
@@ -21,7 +21,7 @@ export class SocketServer {
     // kicks player from gape page back to login page with optional message
 
     kickClient = (socket: any, message?: string): void => {
-        console.log('kicking')
+        console.log('kicking coz of ' + message)
         socket.emit('kickClient', message);
     }
 
@@ -60,6 +60,24 @@ export class SocketServer {
         return res;
     }
 
+    // generates unique id withing array
+
+    generateUniqId = (field?: any): number => {
+        let res = Math.floor(Math.random()*90000) + 10000;
+        
+        while(field.find((n: any) => n.id == res)) {
+            console.log('found duplicate')
+            res = Math.floor(Math.random()*90000) + 10000;
+        }
+        return res;
+    }
+
+    getPlayerBySocket = (socket: any): Player => {
+        let lobby = this.getLobbyBySocketId(socket.id);
+        let player: Player = lobby.players.find(p => p.id == socket.id);
+        return player;
+    }
+
     getDefaultItemsByRole = (role: string): Array<Item> => {
         let items: Array<Item> = [];
 
@@ -69,18 +87,21 @@ export class SocketServer {
                     name: 'Credit card',
                     info: "Alices credit card.",
                     cssClass: 'creditCard',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Private key - alice',
                     info: "Alices private key.",
                     cssClass: 'privateKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Public key - alice',
                     info: "Alices public key.",
                     cssClass: 'publicKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
               break;
@@ -89,18 +110,21 @@ export class SocketServer {
                     name: 'Secret text',
                     info: "Bobs Secret text.",
                     cssClass: 'secretText',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Private key - bob',
                     info: "Bobs private key.",
                     cssClass: 'privateKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Public key - bob',
                     info: "Bobs public key.",
                     cssClass: 'publicKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
               break;
@@ -109,18 +133,21 @@ export class SocketServer {
                     name: 'Secret text',
                     info: "Bobs Secret text.",
                     cssClass: 'secretText',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Private key - hacker',
                     info: "Hackers private key.",
                     cssClass: 'privateKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
                 items.push({
                     name: 'Public key - hacker',
                     info: "Hackers public key.",
                     cssClass: 'publicKey',
+                    id: this.generateUniqId(items),
                     data: '',
                 });
               break;
@@ -129,7 +156,7 @@ export class SocketServer {
         return items;
     }
     
-    getLobies = (socket: Socket) => {
+    getLobies = () => {
         let res: any = [];
         this.lobbies.map( l => {
             res.push({
@@ -155,37 +182,59 @@ export class SocketServer {
     }
 
 
+    createNewPacketMessage = (socket: any) => {
+        let lobby = this.getLobbyBySocketId(socket.id);
+        let player = this.getPlayerBySocket(socket);
+        let players: Array<String> = [];
+        lobby.players.map(p => players.push(p.username))
+        let newMessage: any = {
+            sender: player.username,
+            target: '',
+            players:  players,
+            items: [],
+            data: '',
+        };
+        player.message = newMessage;
+        return newMessage;
+    }
+
+    // returns all items that player should have access to
+
+    getAllPlayerItems = (player: Player): Array<Item> => {
+        let items = player.items;
+        if(player.message !== null) items = [...items, ...player.message.items];
+        return items;
+
+    }
+
     changeTurnBasedOnRole = (socket: any) => {
+        console.log('change turn')
         let lobby = this.getLobbyBySocketId(socket.id);
         if(lobby){
-                let player: Player = lobby.players.find(p => {return p.id == socket.id});
-                if(player.id == lobby.turn) {
-                    if(lobby.players.length == lobby.maxPlayers) {
-                        let nextRoleIndex = this.roles.indexOf(player.role)+1;
-                        nextRoleIndex = nextRoleIndex > this.roles.length -1 ? 0 : nextRoleIndex;
-                        let newPlayer = lobby.players.find(p => {return p.role == this.roles[nextRoleIndex]});
-                        lobby.turn = newPlayer.id;
-                        lobby.round++;
-                        lobby.players.map( p => {
-                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
-                        });
-                        this.io.to(`${lobby.turn}`).emit(' ', true);
-                    } else {
-                        this.sendMessageToClient(socket, "Wait till the lobby is full!");
-                    }
-                } else {
-                    this.kickClient(socket, "Unexpected error");
-                }
+                let player = this.getPlayerBySocket(socket);
+                let nextRoleIndex = this.roles.indexOf(player.role)+1;
+                nextRoleIndex = nextRoleIndex > this.roles.length -1 ? 0 : nextRoleIndex;
+                let newPlayer = lobby.players.find(p => {return p.role == this.roles[nextRoleIndex]});
+                lobby.turn = newPlayer.id;
+                lobby.round++;
+                lobby.players.map( p => {
+                    this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
+                });
+                this.io.to(`${lobby.turn}`).emit(' ', true);
+                
             } else {
                 this.kickClient(socket, "Unexpected error");
             }
     }
+    
     // return overall game lobby status
 
     getGameStatus = (socket: any) => {
         let lobby: Lobby = this.getLobbyBySocketId(socket.id);
         let players: any = [];
         if(lobby) {
+            console.log('game status') 
+            console.log(lobby)
             lobby.players.map((p: Player) => {
                 players.push({
                     username: p.username,
@@ -219,7 +268,7 @@ export class SocketServer {
 
             socket.on('getLobbies', () => {
                 //this.checkLobbies();
-                socket.emit("lobbiesInfo",  this.getLobies(socket));
+                socket.emit("lobbiesInfo",  this.getLobies());
             });
 
            
@@ -228,7 +277,6 @@ export class SocketServer {
             socket.on('sendChatMessage', (message: string) => {
                 let lobby = this.getLobbyBySocketId(socket.id);
                 let username = lobby.players.find(p => p.id == socket.id).username;
-                console.log(username + ": " +message);
                 if(username) {
                     lobby.players.map(p => {
                         if(p.id == socket.id) {
@@ -242,6 +290,41 @@ export class SocketServer {
                 }
                 
             });
+
+            socket.on('addItemToMessage', (itemId: number) => {
+                console.log(itemId);
+                console.log('adding item to message inv ' )
+                let player =  this.getPlayerBySocket(socket);
+                let items = this.getAllPlayerItems(player);
+
+                if(itemId == null) {
+                    this.sendMessageToClient(socket, 'Errow when adding item to invenotory has occures.')
+                } else if(player.message !== null) {
+                    if(player.message.items.find(i => i.id == itemId)) {
+                        this.sendMessageToClient(socket, 'You have already added this attachment.')
+                    } else if(items.find(i => i.id == itemId)){
+                        player.message.items.push(items.find(i => i.id == itemId));
+                    } else {
+                        this.sendMessageToClient(socket, 'Errow when adding item to invenotory has occures.')
+                    }
+                } else {
+                    this.sendMessageToClient(socket, "Wait for your turn.");
+                }
+                console.log(player.message);
+            })
+
+            socket.on('addItemToPlayerInvenotory', (itemId: number) => {
+                console.log('adding item to player inv ' )
+                let player =  this.getPlayerBySocket(socket);
+                let items = this.getAllPlayerItems(player);
+                if(player.items.find(i => i.id == itemId)) {
+                    this.sendMessageToClient(socket, 'You already have this item in your inventory.')
+                } else if(items.find(i => i.id == itemId)){
+                    player.items.push(items.find(i => i.id == itemId));
+                } else {
+                    this.sendMessageToClient(socket, 'Errow when adding item to invenotory has occures.')
+                }
+            })
 
             // assigns client to lobby
             socket.on('joinLobby', (data: joinLobbyMessage) => {
@@ -272,12 +355,16 @@ export class SocketServer {
                             role: this.roles[i],
                             items: this.getDefaultItemsByRole(this.roles[i]),
                             objective: this.getObjectiveByRole(this.roles[i]),
+                            message: null,
                         };
                         if(lobby.players.length == 0) lobby.turn = newPlayer.id;
                         lobby.players.push(newPlayer);
                         lobby.updated =  moment().toDate();
+
+                        // updates target and sender on message
+                        this.io.to(`${lobby.turn}`).emit('updatePacketMessage', newPlayer.username);
+                        this.io.emit('lobbiesInfo', this.getLobies());
                         lobby.players.map((player: Player) => {
-                            
                             if(player.id !== newPlayer.id) {
                                 this.io.to(`${player.id}`).emit('gameStatus', this.getGameStatus(socket));
                                 this.sendMessageToClient(player.socket, data.client.username + " has join the lobby!")
@@ -295,6 +382,34 @@ export class SocketServer {
             });
 
 
+            socket.on('sendPacketMessage', (data: any) => {
+               
+                if(data.sender && data.target && data.data !== undefined && data.items !== undefined) {
+                    let lobby = this.getLobbyBySocketId(socket.id);
+                    // checks if user is on turn
+                    if(lobby.turn == socket.id) {
+
+                        // changes turn
+                        //this.changeTurnBasedOnRole(socket);
+
+                                            
+                        let messageWithPlayers: any = data;
+                        console.log(data);
+                        messageWithPlayers.players = [];
+                        lobby.players.map(p => messageWithPlayers.players.push(p.username));
+                        this.io.to(`${lobby.turn}`).emit('renderPacketMessage', messageWithPlayers);
+
+                    } else {
+                        this.sendMessageToClient(socket, "It's not your turn!");
+                    }
+                   
+                } else {
+                    this.sendMessageToClient(socket, 'An event when sending message has occured!')
+                }
+
+            });
+
+
             // sends player data to client
 
             socket.on('requestPlayerData', () => {
@@ -308,6 +423,11 @@ export class SocketServer {
                         items: player.items,
                         isOnTurn: lobby.turn == player.id ? true : false,
                     }
+
+                    if(res.isOnTurn && player.message == null) {
+                        socket.emit('renderPacketMessage', this.createNewPacketMessage(socket));
+
+                    }
                     socket.emit('updatePlayerData', res);
                 } else {
                     this.kickClient(socket, 'An error has occured when requesting player data from server.');
@@ -317,11 +437,6 @@ export class SocketServer {
 
 
 
-            // ends turn of player
-            socket.on('endTurn', () => {
-                this.changeTurnBasedOnRole(socket);
-            });
-
             // creates new lobby
 
             socket.on('createLobby', (data: createLobbyMessage) => {
@@ -329,13 +444,16 @@ export class SocketServer {
                     players: [],
                     round: 0,
                     name: data.lobbyName,
-                    lobbyId: this.lobbies.length > 0 ? this.lobbies[this.lobbies.length-1].lobbyId + 1 : 0,
+                    lobbyId: this.generateUniqId(this.lobbies),
                     maxPlayers: 3,
                     updated: moment().toDate(),
-                    turn: '',
+                    turn: 0,
                 }
-                socket.emit('createdLobby', newLobby.lobbyId);
+                console.log('Created lobby' + newLobby.name + "#" + newLobby.lobbyId);
+                
                 this.lobbies.push(newLobby);
+                socket.emit('createdLobby', newLobby.lobbyId);
+                this.io.emit('lobbiesInfo', this.getLobies());
             });
 
             // detaches client from lobby and deletes lobby if it remains empty
@@ -352,8 +470,8 @@ export class SocketServer {
                             disconectedPlayer = player;
                         }
                         // changes turn to other player if leaving is on turn
-                        if(lobby.turn = socket.id) {
-                            this.changeTurnBasedOnRole(socket);
+                        if(lobby.turn == socket.id) {
+                            //this.changeTurnBasedOnRole(socket);
                         }
                     });
                     lobby.updated =  moment().toDate();
@@ -361,12 +479,15 @@ export class SocketServer {
 
                     // sends message to other players that someone left
                     if(disconectedPlayer && disconectedPlayer.username) {
+                        // removes player from message
+                        this.io.to(`${lobby.turn}`).emit('updatePacketMessage', disconectedPlayer.username);
+                        
                         lobby.players.map( p => {
                             this.sendMessageToClient(p.socket, disconectedPlayer.username + " has disconected.")
-                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(socket));
+                            this.io.to(`${p.id}`).emit('gameStatus', this.getGameStatus(p.socket));
                         }); 
                         this.checkLobbies();
-                        this.io.emit("lobbiesInfo",  this.getLobies(socket));
+                        this.io.emit("lobbiesInfo",  this.getLobies());
                     }
                 });
                 
