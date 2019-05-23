@@ -65,6 +65,9 @@ io.on('joinedLobby', () => {
 
 // game loop info refresh
 io.on('gameStatus', (data: any) => {
+
+	console.log('game status')
+	console.log(data);
 	// displays lobby name
 	$('#lobbyName').text(data.lobby.name);
 	
@@ -85,6 +88,7 @@ io.on('gameStatus', (data: any) => {
 
 	// asks for player data
 	io.emit('requestPlayerData');
+	setEventListenersForDaD();
 });
 
 
@@ -131,14 +135,15 @@ let setEventListenersForDaD = () => {
 	$('#messageAttachment').on('dragover', (e: any) => {e.preventDefault()});
 	$('#messageAttachment').on('drop', (e: any) => {
 		e.preventDefault();
-		let found = false;
+		let alreadyExist = false;
 		$('#messageAttachment').children('div').toArray().map( e => {
 			if($(e).attr('title') == $(dragged).attr('title')) {
-				found = true;
+				alreadyExist = true;
 			}
 		});
-		if(!found) {
+		if(!alreadyExist && $(dragged).attr('itemId')) {
 			$('#messageAttachment').append(dragged);
+			io.emit('addItemToMessage', $(dragged).attr('itemId'))
 			dragged = undefined;
 		}
 		$('#messageAttachment').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone();});
@@ -149,15 +154,21 @@ let setEventListenersForDaD = () => {
 	$('#inventory').on('dragover', (e: any) => {e.preventDefault()});
 	$('#inventory').on('drop', (e: any) => {
 		e.preventDefault();
-		let found = false;
+
+		let alreadyExist = false;
+
+		// checks if item isnt already existing in inventory
+
 		$('#inventory').children('div').toArray().map( e => {
-			if($(e).attr('title') == $(dragged).attr('title')) {
-				found = true;
+			if($(e).attr('title') == $(dragged).attr('title') ) {
+				alreadyExist = true;
 			}
 		});
-		if(!found) {
+
+		if(!alreadyExist && $(dragged).attr('itemId')) {
 			$('#inventory').append(dragged);
 			dragged = undefined;
+			//io.emit('addItemToPlayerInvenotory', $(dragged).attr('itemId'));
 		}
 		$('#inventory').children().on('dragstart', (e: any) => {dragged = $(e.currentTarget).clone()});
 
@@ -166,18 +177,69 @@ let setEventListenersForDaD = () => {
 
 
 io.on('renderPacketMessage', (data: any ) => {
-	console.log(data)
+	console.log(data);
+	let sender = $('#sender');
+	let target = $('#target');
+	sender.empty();
+	target.empty();
+	data.players.map((p: any) => {
+		//<option value="option2">Option 2</option>
+		sender.append(`<option selected="${ p == data.sender ? "selected" : "false"} "value="${p}">${p}</option>`);
+		target.append(`<option selected="${ p == data.target ? "selected" : "false"} "value="${p}">${p}</option>`);
 
+	});
+	$('#messageBody').val(data.data);
+	$('div#messageAttachment').html = null;
+	data.items.map((i: any) => {
+		$('div#messageAttachment').append(`<div draggable="true" title="${i.info}"  itemId="${i.id}" class="${i.cssClass}">${i.name}#${i.id}</div>`);
+	})
 });
 	
 
+io.on('updatePacketMessage', (username: string) => {
+	let sender = $('#sender');
+	let target = $('#target');
+	let found = false;
+	sender.children().toArray().map((ch: any, index) => {
+		console.log("here " + ch.value)
+		if(ch.value == username) {
+			found = true;
+			console.log('removing');
+			sender.children().eq(index).remove();
+			target.children().eq(index).remove();
+		} 
+	})
+	if(!found) {
+		sender.append(`<option value="${username}">${username}</option>`);
+		target.append(`<option value="${username}">${username}</option>`);
+	}
+
+});
+
 let sendPacketMessage = () => {
-	let to;
-	let from;
-	let message;
-	let attachments;
+	let sender = $('#sender').val();
+	let target = $('#target').val();
+	let data = $('#messageBody').val();
+	let attachments: Array<number> = [];
+	$('div#messageAttachment').children().toArray().map(n => {n.getAttribute('itemId') ? attachments.push(n.getAttribute('itemId') as any as number) : undefined});
+	let message = {
+		sender: sender,
+		target: target,
+		data: data,
+		items: attachments,
+	}
+
+	io.emit('sendPacketMessage', message);
+	
 } 
 
+
+io.on('clearPacketMessage', () => {
+	$('#sender').val('');
+	$('#target').val('');
+	$('#messageBody').val('');
+	$('div#messageAttachment').html = null;
+});
 
 
 // displays chat message
@@ -213,8 +275,19 @@ let sendChatMessage = () => {
 }
 
 window.onload = function() {
+
+
+	console.log('adding')
+		$('#sendBtn').on('click', () => {
+			console.log('click');
+			sendPacketMessage();
+		})
+
+
+	setEventListenersForDaD();
+
+
 	// attaches event listeners
-	$('#sendBtn').on('click', () => endTurn());
 	$('#chatSendBtn').on('click', () => sendChatMessage());
 
 	$('#toolbarMessages').on('click', () => {
