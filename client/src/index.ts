@@ -110,7 +110,7 @@ io.on('updatePlayerData', (data: any) => {
 	$('#inventory').html('');
 
 	data.items.map((i: any) => {
-		$('#inventory').append(`<div draggable="true" title="${i.info}" class="${i.cssClass}">${i.name}</div>`);
+		$('#inventory').append(`<div draggable="true" title="${i.info}"  itemId="${i.id}" class="${i.cssClass}">${i.name}#${i.id}</div>`);
 	});
 
 	setEventListenersForDaD();
@@ -166,7 +166,7 @@ let setEventListenersForDaD = () => {
 
 
 io.on('renderPacketMessage', (data: any ) => {
-
+	console.log(data)
 
 });
 	

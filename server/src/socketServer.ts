@@ -1,5 +1,5 @@
 
-import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item} from './types';
+import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item, Message} from './types';
 import * as moment from 'moment';
 import { Socket } from 'dgram';
 
@@ -72,6 +72,11 @@ export class SocketServer {
 
     }
 
+    getPlayerBySocket = (socket: any): Player => {
+        let lobby = this.getLobbyBySocketId(socket.id);
+        let player: Player = lobby.players.find(p => p.id == socket.id);
+        return player;
+    }
 
     getDefaultItemsByRole = (role: string): Array<Item> => {
         let items: Array<Item> = [];
@@ -188,7 +193,7 @@ export class SocketServer {
     changeTurnBasedOnRole = (socket: any) => {
         let lobby = this.getLobbyBySocketId(socket.id);
         if(lobby){
-                let player: Player = lobby.players.find(p => {return p.id == socket.id});
+                let player =  this.getPlayerBySocket(socket);
                 if(player.id == lobby.turn) {
                     if(lobby.players.length == lobby.maxPlayers) {
                         let nextRoleIndex = this.roles.indexOf(player.role)+1;
@@ -210,7 +215,6 @@ export class SocketServer {
                 this.kickClient(socket, "Unexpected error");
             }
     }
-
     
     // return overall game lobby status
 
@@ -275,6 +279,19 @@ export class SocketServer {
                 
             });
 
+
+            socket.on('addItemToPlayerInvenotory', (itemId: number) => {
+                let player =  this.getPlayerBySocket(socket);
+                let items = this.getAllPlayerItems(player);
+                if(player.items.find(i => i.id == itemId)) {
+                    this.sendMessageToClient(socket, 'You already have this item in your inventory.')
+                } else if(items.find(i => i.id == itemId)){
+                    player.items.push(items.find(i => i.id == itemId));
+                } else {
+                    this.sendMessageToClient(socket, 'Errow when adding item to invenotory has occures.')
+                }
+            })
+
             // assigns client to lobby
             socket.on('joinLobby', (data: joinLobbyMessage) => {
                 let kicked = false;
@@ -328,8 +345,29 @@ export class SocketServer {
             });
 
 
-            socket.on('sendPacketMessage', (data: any) => {
-                
+            socket.on('sendPacketMessage', (data: Message) => {
+                if(data.sender && data.target && data.data && data.items) {
+                    let lobby = this.getLobbyBySocketId(socket.id);
+                    // checks if user is on turn
+                    if(lobby.turn == socket.id) {
+
+                        // changes turn
+                        this.changeTurnBasedOnRole(socket);
+
+                                            
+                        let messageWithPlayers: any = data;
+                        messageWithPlayers.players = [];
+                        lobby.players.map(p => messageWithPlayers.players.push(p.username));
+                        this.io.to(`${lobby.turn}`).emit('renderPacketMessage', messageWithPlayers);
+
+                    } else {
+                        this.sendMessageToClient(socket, "It's not your turn!");
+                    }
+                   
+                } else {
+                    this.sendMessageToClient(socket, 'An event when sending message has occured!')
+                }
+
             });
 
 
