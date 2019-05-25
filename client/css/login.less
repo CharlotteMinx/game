@@ -86,6 +86,14 @@
       }
    }
 
+   input[type=text] {
+      background-color: transparent;
+      //border-bottom: 1px solid @blue;
+      font-size: 1rem;
+      font-family: 'Source Code Pro', monospace;
+      color: @blue;
+   }
+
 //
 // LOGO
    #logo_container {
@@ -117,68 +125,64 @@
    }
 
 //
-// Main
-
-   #user_info {
-      color: @orange;
-
-      padding: @pad * 2;
-      width: 8rem;
-   }
+// Prompt
    .prompt {
       font-family: 'Source Code Pro', monospace;
       display: flex;
       flex-direction: row;  
 
+      width: 100%;
       span {
-         margin-right: 11px;
+         margin-right: 6px;
          border: 0;
       }
    }
 
+   .prompt_cmd {
+      font-family: 'Source Code Pro', monospace;
+      cursor: pointer;
+      background-color: @blue;
+      color: @l-blue;
+   }
+
+   .prompt_cmd:hover {
+      color: @orange;
+      background-color: @l-orange;
+   }
+//
+// Main
+
+   #right {
+      width: 100%;
+   }
+
+   #user_info {
+      color: @orange;
+      width: 8rem;
+   }
+
+
    #main {
       flex-flow: row nowrap;
    }
-   #games {
-      padding: @pad;
-      margin: 0 auto;
-      flex-direction: row;
-      justify-content: center;
 
-      p {
-         //background-color: @darkish;
-         //border-radius: 0.3rem;
-         padding: @pad;
-         color: @orange;
-         //text-align: center;
-      }
+   #games {
+      flex-direction: row;
+      justify-content: start;
+      color: @orange;
+   }
+
+   #join_game {
+      min-width: 20vw;
    }
 
    #lobbies li {
-      background-color: @darkish;
-      color: @orange;
-      
       margin-bottom: @pad;
-      padding: @pad;
-      //border-radius: 0.3rem;
-      
-      display: flex;
-      height: auto;
-      
-      align-items: center;
-      justify-content: space-between;
    }
 
    #lobby_fill, #lobby_name {
       font-family: 'Source Code Pro', monospace;
    }
-
-   #lobbies button {
-      width: 4rem;
-      background-color: @blue;
-      color: @l-blue;
-   }
-
 
    #lobbies {
       max-height: 50vh;
@@ -190,17 +194,11 @@
 
    .lobby {
       display: flex;
-
       justify-content: space-between;
    }
 
    #create_game {
-      padding-top: 0;
-      
-      p {
-         padding: 0;
-         margin: 0;
-      }
+      margin-left: 10vw;
    }
    
    #new_game {
@@ -209,39 +207,7 @@
       flex-flow: column wrap;
 
       input {
-         width: 100%;
+         width: 7rem;
       }
    }
 
-   #create_lobby {
-      font-family: 'Source Code Pro', monospace;
-      cursor: pointer;
-      background-color: @blue;
-      color: @l-blue;
-
-   }
-   #create_lobby:hover {
-      color: @orange;
-      background-color: @l-orange;
-   }
-   
-   input[type=number]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-   }
-
-   input[type=text] {
-      background-color: transparent;
-      //border-bottom: 1px solid @blue;
-      font-size: 1rem;
-      font-family: 'Source Code Pro', monospace;
-      color: @blue;
-   }
-
-   #create_game, #join_game {
-      padding: @pad;
-      width: 50%;
-      //background-color: @dark;
-   }
-
-   .vline {
-   }

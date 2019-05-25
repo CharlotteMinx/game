@@ -23,11 +23,12 @@
               lobbies.map(l => {
                   html += `
                   <li class="lobby" onClick=(joinLobby(${l.id}))>
-                    <span id="lobby_name">${l.name} </span>
-                    <div class="vline"></div>
-                    <span id="lobby_fill">${l.playerCount}/${l.maxPlayers}</span> 
-                    <div class="vline"></div>
-                    <button> Join </button> 
+                    
+                    <div class="prompt">
+                      <span> > </span>
+                      <span class="lobby_name">${l.name} </span>
+                      <span class="lobby_fill">${l.playerCount}/${l.maxPlayers} </span> 
+                    </div>
                   </li>`;
               });
               document.getElementById('lobbies').innerHTML = html;
@@ -96,6 +97,11 @@
         <p> Join a game </p>
         <ul id="lobbies">
         </ul>
+
+        <div id="enter_lobby" class="prompt">
+          <span> > </span>
+          <span class="prompt_cmd"> enter() </span>
+        </div>
       </div>
 
       <div class="flex_container" id="create_game">
@@ -103,12 +109,13 @@
         <div id="new_game">
           <div class="prompt">
               <span> > </span>
-              <input type="text" id="lobbyname" placeholder="lobby_name">
+              <input type="text" id="lobbyname" placeholder="lobby_name"
+              minlength="3" maxlength="8">
           </div>
 
           <div class="prompt">
             <span> > </span>
-            <span id="create_lobby" onclick="createLobby()"> create() </span>
+            <span id="create_lobby" class="prompt_cmd" onclick="createLobby()"> create() </span>
           </div>
         </div>
       </div>

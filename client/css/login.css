@@ -55,6 +55,12 @@ button {
 button i {
   padding-right: 0.5rem;
 }
+input[type=text] {
+  background-color: transparent;
+  font-size: 1rem;
+  font-family: 'Source Code Pro', monospace;
+  color: #00B3FF;
+}
 #logo_container {
   position: relative;
   width: 25vw;
@@ -78,51 +84,50 @@ button i {
   animation: loading 1s ease-in-out;
   animation-iteration-count: infinite;
 }
-#user_info {
-  color: #FF7700;
-  padding: 1rem;
-  width: 8rem;
-}
 .prompt {
   font-family: 'Source Code Pro', monospace;
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 .prompt span {
-  margin-right: 11px;
+  margin-right: 6px;
   border: 0;
+}
+.prompt_cmd {
+  font-family: 'Source Code Pro', monospace;
+  cursor: pointer;
+  background-color: #00B3FF;
+  color: #ADE7FF;
+}
+.prompt_cmd:hover {
+  color: #FF7700;
+  background-color: #FFE591;
+}
+#right {
+  width: 100%;
+}
+#user_info {
+  color: #FF7700;
+  width: 8rem;
 }
 #main {
   flex-flow: row nowrap;
 }
 #games {
-  padding: 0.5rem;
-  margin: 0 auto;
   flex-direction: row;
-  justify-content: center;
-}
-#games p {
-  padding: 0.5rem;
+  justify-content: start;
   color: #FF7700;
+}
+#join_game {
+  min-width: 20vw;
 }
 #lobbies li {
-  background-color: #151c30;
-  color: #FF7700;
   margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  display: flex;
-  height: auto;
-  align-items: center;
-  justify-content: space-between;
 }
 #lobby_fill,
 #lobby_name {
   font-family: 'Source Code Pro', monospace;
-}
-#lobbies button {
-  width: 4rem;
-  background-color: #00B3FF;
-  color: #ADE7FF;
 }
 #lobbies {
   max-height: 50vh;
@@ -135,11 +140,7 @@ button i {
   justify-content: space-between;
 }
 #create_game {
-  padding-top: 0;
-}
-#create_game p {
-  padding: 0;
-  margin: 0;
+  margin-left: 10vw;
 }
 #new_game {
   color: #FF7700;
@@ -147,29 +148,5 @@ button i {
   flex-flow: column wrap;
 }
 #new_game input {
-  width: 100%;
-}
-#create_lobby {
-  font-family: 'Source Code Pro', monospace;
-  cursor: pointer;
-  background-color: #00B3FF;
-  color: #ADE7FF;
-}
-#create_lobby:hover {
-  color: #FF7700;
-  background-color: #FFE591;
-}
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-input[type=text] {
-  background-color: transparent;
-  font-size: 1rem;
-  font-family: 'Source Code Pro', monospace;
-  color: #00B3FF;
-}
-#create_game,
-#join_game {
-  padding: 0.5rem;
-  width: 50%;
+  width: 7rem;
 }
