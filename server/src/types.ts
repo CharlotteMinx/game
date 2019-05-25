@@ -36,6 +36,7 @@ export type Message = {
     target: string;
     data: string;
     items: Array<Item>;
+    players: Array<String>;
 }
 
 export type joinLobbyMessage = {
