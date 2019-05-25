@@ -3,9 +3,7 @@
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-      <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/some-time-later" type="text/css"/>
-      <link href="https://fonts.googleapis.com/css?family=Cabin:400,700|Karla:400,700|Oxygen:400,700|Raleway:400,700&amp;subset=latin-ext" rel="stylesheet">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
       <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet"> 
 
 
@@ -83,15 +81,16 @@
     </div>
   
   </div>
+
   <div id="right">
-  
     <div class="flex_container" id="user_info">
       <label for="username" id="un_label"> Username </label>
       <div class="prompt"> 
         <span> > </span>
-        <input type="text" id="username">
+        <input type="text" id="username" placeholder="user_name">
       </div>
     </div>
+
     <div class="flex_container" id="games">
       <div class="flex_container" id="join_game">
         <p> Join a game </p>
@@ -102,12 +101,15 @@
       <div class="flex_container" id="create_game">
         <p> Create a game </p>
         <div id="new_game">
-          <div class="game_info">
-            <label> Name </label>
-            <input type="text" id="lobbyname"> </input>
-            <!-- TODO - hardcore checkbox -->
+          <div class="prompt">
+              <span> > </span>
+              <input type="text" id="lobbyname" placeholder="lobby_name">
           </div>
-          <button id="create_lobby" class="material-icons" onclick="createLobby()" >add</button>
+
+          <div class="prompt">
+            <span> > </span>
+            <span id="create_lobby" onclick="createLobby()"> create() </span>
+          </div>
         </div>
       </div>
     </div>

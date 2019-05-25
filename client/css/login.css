@@ -83,13 +83,13 @@ button i {
   padding: 1rem;
   width: 8rem;
 }
-#user_info .prompt {
+.prompt {
   font-family: 'Source Code Pro', monospace;
   display: flex;
   flex-direction: row;
 }
-#user_info #username {
-  margin-left: 6px;
+.prompt span {
+  margin-right: 11px;
   border: 0;
 }
 #main {
@@ -102,10 +102,8 @@ button i {
   justify-content: center;
 }
 #games p {
-  background-color: #151c30;
   padding: 0.5rem;
   color: #FF7700;
-  text-align: center;
 }
 #lobbies li {
   background-color: #151c30;
@@ -136,38 +134,36 @@ button i {
   display: flex;
   justify-content: space-between;
 }
+#create_game {
+  padding-top: 0;
+}
+#create_game p {
+  padding: 0;
+  margin: 0;
+}
 #new_game {
-  background-color: #151c30;
   color: #FF7700;
   display: flex;
   flex-flow: column wrap;
-  padding: 0.5rem;
 }
-#new_game button {
+#new_game input {
+  width: 100%;
+}
+#create_lobby {
+  font-family: 'Source Code Pro', monospace;
+  cursor: pointer;
   background-color: #00B3FF;
   color: #ADE7FF;
-  font-size: 1.3rem;
-  padding: 0;
 }
-.game_info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.5rem 0;
-}
-.game_info input {
-  width: 70%;
-  color: #00B3FF;
-}
-.game_info input[type=checkbox] {
-  background-color: #090C15;
+#create_lobby:hover {
+  color: #FF7700;
+  background-color: #FFE591;
 }
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 input[type=text] {
   background-color: transparent;
-  border-bottom: 1px solid #00B3FF;
   font-size: 1rem;
   font-family: 'Source Code Pro', monospace;
   color: #00B3FF;
@@ -176,5 +172,4 @@ input[type=text] {
 #join_game {
   padding: 0.5rem;
   width: 50%;
-  background-color: #090C15;
 }
