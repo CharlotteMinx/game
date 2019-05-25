@@ -78,6 +78,20 @@ button i {
   animation: loading 1s ease-in-out;
   animation-iteration-count: infinite;
 }
+#user_info {
+  color: #FF7700;
+  padding: 1rem;
+  width: 8rem;
+}
+#user_info .prompt {
+  font-family: 'Source Code Pro', monospace;
+  display: flex;
+  flex-direction: row;
+}
+#user_info #username {
+  margin-left: 6px;
+  border: 0;
+}
 #main {
   flex-flow: row nowrap;
 }
@@ -157,11 +171,6 @@ input[type=text] {
   font-size: 1rem;
   font-family: 'Source Code Pro', monospace;
   color: #00B3FF;
-}
-#user_info {
-  color: #FF7700;
-  background-color: #151c30;
-  padding: 1rem;
 }
 #create_game,
 #join_game {

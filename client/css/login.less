@@ -119,6 +119,26 @@
 //
 // Main
 
+   #user_info {
+      color: @orange;
+      //background-color: @darkish;
+      
+      padding: @pad * 2;
+      width: 8rem;
+      
+      .prompt {
+         font-family: 'Source Code Pro', monospace;
+         display: flex;
+         flex-direction: row;  
+         
+      }
+
+      #username {
+         margin-left: 6px;
+         border: 0;
+      }
+   }
+
    #main {
       flex-flow: row nowrap;
    }
@@ -226,12 +246,7 @@
       color: @blue;
    }
 
-   #user_info {
-      color: @orange;
-      background-color: @darkish;
-      //border-radius: 0.3rem;
-      padding: @pad * 2;
-   }
+
 
    #create_game, #join_game {
       padding: @pad;
