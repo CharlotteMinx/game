@@ -75,27 +75,37 @@
           }
       </script>
     </head>
-<body class="flex_container">
-  <div class="flex_container" id="user_info">
-    <label for="username" id="un_label"> Username </label>
-    <input type="text" id="username">
-  </div>
-  <div class="flex_container" id="games">
-    <div class="flex_container" id="join_game">
-      <p> Join a game </p>
-      <ul id="lobbies">
-      </ul>
+<body class="flex_container" id="main">
+  <div id="left">
+    <div id="logo_container">
+      <image id="logo-outline" src="./logo-alt-outline.png">
+      <image id="logo-blur" src="./logo-alt-trans.png">
     </div>
+  
+  </div>
+  <div id="right">
+  
+    <div class="flex_container" id="user_info">
+      <label for="username" id="un_label"> Username </label>
+      <input type="text" id="username">
+    </div>
+    <div class="flex_container" id="games">
+      <div class="flex_container" id="join_game">
+        <p> Join a game </p>
+        <ul id="lobbies">
+        </ul>
+      </div>
 
-    <div class="flex_container" id="create_game">
-      <p> Create a game </p>
-      <div id="new_game">
-        <div class="game_info">
-          <label> Name </label>
-          <input type="text" id="lobbyname"> </input>
-          <!-- TODO - hardcore checkbox -->
+      <div class="flex_container" id="create_game">
+        <p> Create a game </p>
+        <div id="new_game">
+          <div class="game_info">
+            <label> Name </label>
+            <input type="text" id="lobbyname"> </input>
+            <!-- TODO - hardcore checkbox -->
+          </div>
+          <button id="create_lobby" class="material-icons" onclick="createLobby()" >add</button>
         </div>
-        <button onclick="createLobby()" >Create</button>
       </div>
     </div>
   </div>

@@ -55,6 +55,32 @@ button {
 button i {
   padding-right: 0.5rem;
 }
+#logo_container {
+  position: relative;
+  width: 25vw;
+  height: 25vw;
+}
+#logo_container #logo-blur,
+#logo_container #logo-outline {
+  position: absolute;
+  width: 25vw;
+}
+@keyframes loading {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+#logo-blur {
+  animation: loading 1s ease-in-out;
+  animation-iteration-count: infinite;
+}
+#main {
+  flex-flow: row nowrap;
+}
 #games {
   padding: 0.5rem;
   margin: 0 auto;
@@ -106,6 +132,8 @@ button i {
 #new_game button {
   background-color: #00B3FF;
   color: #ADE7FF;
+  font-size: 1.3rem;
+  padding: 0;
 }
 .game_info {
   display: flex;
@@ -140,10 +168,4 @@ input[type=text] {
   padding: 0.5rem;
   width: 50%;
   background-color: #090C15;
-}
-.vline {
-  width: 2px;
-  height: 90%;
-  margin: 5%;
-  background-color: #FF7700;
 }
