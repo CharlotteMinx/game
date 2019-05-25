@@ -104,7 +104,7 @@ io.on('updatePlayerData', (data: any) => {
 
 	// changes turn to yours
 	if(data.isOnTurn) {
-		$('#turnName').html('Yours turn!');
+		$('#turnName').html('Your turn!');
 		$('#app').addClass('onTurn');
 	} else {
 		$('#app').removeClass('onTurn');
