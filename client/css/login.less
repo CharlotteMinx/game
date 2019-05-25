@@ -77,12 +77,12 @@
       align-items: center;
       justify-content: center;
       
-      font-family: 'Argot';
+      font-family: 'Tron';
       font-size: 1.2rem;
-   }
 
-   button i {
-      padding-right: @pad;
+      i {
+         padding-right: @pad;
+      }
    }
 
    #games {
@@ -90,14 +90,14 @@
       margin: 0 auto;
       flex-direction: row;
       justify-content: center;
-   }
 
-   #games p {
-      background-color: @darkish;
-      //border-radius: 0.3rem;
-      padding: @pad;
-      color: @orange;
-      text-align: center;
+      p {
+         background-color: @darkish;
+         //border-radius: 0.3rem;
+         padding: @pad;
+         color: @orange;
+         text-align: center;
+      }
    }
 
    #lobbies li {
@@ -110,12 +110,16 @@
       
       display: flex;
 
-      height: 2rem;
+      height: auto;
+      
       
       align-items: center;
       justify-content: space-between;
    }
 
+   #lobby_fill, #lobby_name {
+      font-family: 'Source Code Pro', monospace;
+   }
 
    #lobbies button {
       width: 4rem;
@@ -183,6 +187,7 @@
       background-color: transparent;
       border-bottom: 1px solid @blue;
       font-size: 1rem;
+      font-family: 'Source Code Pro', monospace;
       color: @blue;
    }
 
