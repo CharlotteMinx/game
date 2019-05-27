@@ -35,6 +35,14 @@
       box-sizing: border-box;
    }
 
+   h3 {
+      font-family: 'Tron';
+      color: @orange;
+      font-size: 1.5rem;
+      margin: 0;
+      font-weight: normal;
+   }
+
    *, *::before, *::after { box-sizing: inherit; }
 
    button, input[type=text], a {
@@ -59,7 +67,6 @@
    button {
       cursor: pointer;
       
-      font-weight: bold;
       padding: @pad;
       //border-radius: 0.3rem;
       cursor: pointer;
@@ -108,6 +115,7 @@
    }
 
    #scoreboard {
+      width: 100%;
       display: flex;
       justify-content: space-between;
    }
@@ -115,12 +123,29 @@
 // Left
    .left {
       display: flex;
+      flex-flow: column;
+      //align-items: center;
+      justify-content: space-between;
 
-      height: 100vh;
+      // TODO
+      height: 90vh;
       width: 50%;
       background-color: @l-orange;
    }
 
+   .objective--wrapper {
+      background: @dark;
+      color: @blue;
+
+      // TODO
+      height: 10rem;
+
+      padding: @pad;
+   }
+
+   .playerBox--wrapper {
+      .objective--wrapper();
+   }
 
 
 // Right
@@ -128,4 +153,25 @@
    .right {
       .left();
       background-color: @l-blue;
+      flex-direction: column;
+      align-items: end;
+   }
+
+   .message--wrapper {
+      width: 60%;
+      background: @darkish;
+      height: 80%;
+      padding: @pad;
+   }
+
+
+   #messageBody {
+      width: 100%;
+   }
+
+
+   .inventory--wrapper {
+      width: 100%;
+      background: @dark;
+      height: 20%;
    }
