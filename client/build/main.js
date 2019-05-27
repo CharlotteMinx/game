@@ -5994,7 +5994,7 @@ io.on('updatePlayerData', function (data) {
     $('#role').html(data.role);
     // changes turn to yours
     if (data.isOnTurn) {
-        $('#turnName').html('Yours turn!');
+        $('#turnName').html('Your turn!');
         $('#app').addClass('onTurn');
     }
     else {
