@@ -38,7 +38,7 @@
    h3 {
       font-family: 'Tron';
       color: @orange;
-      font-size: 1.5rem;
+      font-size: 2rem;
       margin: 0;
       font-weight: normal;
    }
@@ -93,6 +93,34 @@
    }
 
 //
+// Prompt
+   .prompt {
+      font-family: 'Source Code Pro', monospace;
+      display: flex;
+      flex-direction: row;  
+
+      width: 100%;
+      span {
+         margin-right: 6px;
+         border: 0;
+      }
+   }
+
+   .prompt_cmd {
+      font-family: 'Source Code Pro', monospace;
+      cursor: pointer;
+      //background-color: @blue;
+      color: @orange;
+      //color: @l-blue;
+   }
+
+   .prompt_cmd:hover {
+      background-color: @blue;
+      color: @l-blue;
+      
+      //background-color: @l-orange;
+   }
+//
 // Main
    #app {
       display: flex;
@@ -131,6 +159,13 @@
       height: 90vh;
       width: 50%;
       background-color: @l-orange;
+   }
+
+   #msg-perimeter {
+      font-size: 1.5rem;
+      color: @blue;
+      font-weight: bold;
+      
    }
 
    .objective--wrapper {
@@ -172,6 +207,6 @@
 
    .inventory--wrapper {
       width: 100%;
-      background: @dark;
+      background: @darkish;
       height: 20%;
    }
