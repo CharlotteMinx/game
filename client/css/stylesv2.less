@@ -84,6 +84,13 @@
       }
    }
 
+   button, input[type=text], a, textarea {
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+   }
+
    input[type=text] {
       background-color: transparent;
       //border-bottom: 1px solid @blue;
@@ -95,7 +102,7 @@
 //
 // Prompt
    .prompt {
-      font-family: 'Source Code Pro', monospace;
+      //font-family: 'Source Code Pro', monospace;
       display: flex;
       flex-direction: row;  
 
@@ -161,13 +168,6 @@
       background-color: @l-orange;
    }
 
-   #msg-perimeter {
-      font-size: 1.5rem;
-      color: @blue;
-      font-weight: bold;
-      
-   }
-
    .objective--wrapper {
       background: @dark;
       color: @blue;
@@ -178,9 +178,38 @@
       padding: @pad;
    }
 
-   .playerBox--wrapper {
-      .objective--wrapper();
+   #msg-perimeter {
+      font-size: 1.5rem;
+      color: @blue;
+      font-weight: bold;
    }
+
+   .message--wrapper {
+      width: 60%;
+      background: @darkish;
+      height: 80%;
+      padding: @pad;
+   }
+
+   .message--header, #messageBody {
+      margin-left: @pad * 2;
+   }
+
+
+   #messageBody {
+      width: 80%;
+      resize: none;
+      background: @dark;
+   }
+
+
+   .inventory--wrapper {
+      width: 100%;
+      background: @darkish;
+      height: 20%;
+   }
+
+
 
 
 // Right
@@ -192,21 +221,3 @@
       align-items: end;
    }
 
-   .message--wrapper {
-      width: 60%;
-      background: @darkish;
-      height: 80%;
-      padding: @pad;
-   }
-
-
-   #messageBody {
-      width: 100%;
-   }
-
-
-   .inventory--wrapper {
-      width: 100%;
-      background: @darkish;
-      height: 20%;
-   }
