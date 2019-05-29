@@ -124,13 +124,13 @@ input[type=text] {
 }
 #msg-perimeter {
   font-size: 1.5rem;
-  color: #00B3FF;
+  color: #FF7700;
   font-weight: bold;
 }
 .message--wrapper {
   width: 100%;
   background: #090C15;
-  height: 80%;
+  height: 60%;
   padding: 0.5rem;
 }
 .message--header,
@@ -140,7 +140,7 @@ input[type=text] {
 }
 .from,
 .to {
-  color: #ADE7FF;
+  color: #00B3FF;
   font-weight: bold;
 }
 .target {
@@ -149,13 +149,19 @@ input[type=text] {
   margin: 0;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .target li {
-  background: #151c30;
   color: #FF7700;
+  font-weight: bold;
   padding: 0.25rem;
-  margin-top: 0.25rem;
+  margin: 0.25rem;
+  cursor: pointer;
+  border: 2px solid #FF7700;
+}
+.target li:hover {
+  background: #FF7700;
+  color: #090C15;
 }
 #messageBody {
   width: 80%;
@@ -166,7 +172,11 @@ input[type=text] {
 .inventory--wrapper {
   width: 100%;
   background: #090C15;
-  height: 20%;
+  height: 40%;
+  border-top: 1px solid #FF7700;
+  border-bottom: 1px solid #FF7700;
+  padding: 0.5rem;
+  color: #00B3FF;
 }
 .right {
   display: flex;
@@ -178,4 +188,29 @@ input[type=text] {
   background-color: #ADE7FF;
   flex-direction: column;
   align-items: end;
+}
+.chat--wrapper {
+  background: #FF7700;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  height: 40vh;
+  width: 40vw;
+}
+.chat--body_container {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.chat--item {
+  background: #090C15;
+  color: #ADE7FF;
+  height: 3rem;
+  display: flex;
+  flex-flow: column wrap;
+}
+.chat--item.right {
+  justify-self: right;
+  background: #151c30;
 }

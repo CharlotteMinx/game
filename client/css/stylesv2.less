@@ -181,14 +181,14 @@
 
    #msg-perimeter {
       font-size: 1.5rem;
-      color: @blue;
+      color: @orange;
       font-weight: bold;
    }
 
    .message--wrapper {
       width: 100%;
       background: @dark;
-      height: 80%;
+      height: 60%;
       padding: @pad;
    }
 
@@ -198,7 +198,7 @@
    }
 
    .from, .to {
-      color: @l-blue;
+      color: @blue;
       font-weight: bold;
    }
 
@@ -208,13 +208,21 @@
       margin: 0;
       display: flex;
       flex-flow: row wrap;
-      justify-content: space-between;
+      justify-content: flex-start;
 
       li {
-         background: @darkish;
+         //background: @orange;
          color: @orange;
+         font-weight: bold;
          padding: @pad / 2;
-         margin-top: @pad / 2;
+         margin: @pad / 2;
+         cursor: pointer;
+         border: 2px solid @orange;
+      }
+
+      li:hover {
+         background: @orange;
+         color: @dark;
       }
    }
 
@@ -230,7 +238,12 @@
    .inventory--wrapper {
       width: 100%;
       background: @dark;
-      height: 20%;
+      height: 40%;
+      border-top:  1px solid @orange;
+      border-bottom:  1px solid @orange;
+      padding: @pad;
+
+      color: @blue;
    }
 
 
@@ -244,4 +257,35 @@
       flex-direction: column;
       align-items: end;
    }
+//
+//CHAT
+   .chat--wrapper {
+      background: @orange;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      z-index: 999;
 
+      height: 40vh;
+      width: 40vw;
+   }
+
+   .chat--body_container {
+      width: 100%;
+      display: flex;
+      flex-flow: column;
+   }
+
+   .chat--item {
+      background: @dark;
+      color: @l-blue;
+      height: 3rem;
+      display: flex;
+      flex-flow: column wrap;
+
+   }
+
+   .chat--item.right {
+      justify-self: right;
+      background: @darkish;
+   }

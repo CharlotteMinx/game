@@ -42,20 +42,24 @@
 			</div>
 
 			<div class="message--wrapper ">
-        <span id="msg-perimeter"> MESG::NEW./ { </span>
+        <span id="msg-perimeter"> MESG::NEW => { </span>
 				
 				<div class="message--header">
 					<div class="message--head">
 						<div class="message--sender_wrapper">
 							<span  class="from"> source: </span>
-              <span> You </span>
+              <span> this </span>
 						</div>
 						<div class="message--target_wrapper">
-							<span class="to"> dest: </span>
-								<select id="target" class="target">
-										<option value="option1" selected="selected">Option 1</option>
-										<option value="option2">Option 2</option>
-								</select>
+							<span class="to"> dest: [ <span id="chosen_target"> </span> ]</span> 
+								<!-- TODO na ul -->
+							<ul id="TARGET" class="target">
+									<li value="option1" selected="selected">Artyčok</li>
+									<li value="option2">Bob</li>
+									<li value="option2">Lu</li>
+									<li value="option2">Alice</li>
+									<li value="option2">Bernhardt</li>
+							</ul>
 						</div>
 
 					</div>
@@ -96,7 +100,7 @@
 
 	<!-- Chat -->
 	<div id="chat" class="chat--wrapper">
-			<span class="close"></span>
+		<span class="close"></span>
 		<div id="chatContainer" class="chat--body_container">
 			<span class="chat--item">
 				<span class="chat--name">user1</span>
