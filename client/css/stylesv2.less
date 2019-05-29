@@ -142,7 +142,7 @@
       padding: @pad;
 
       display: flex;
-      background-color: @darkish;
+      background-color: @dark;
 
       justify-content: center;
       align-items: center;
@@ -176,6 +176,7 @@
       height: 10rem;
 
       padding: @pad;
+      border-bottom: 1px solid @orange;
    }
 
    #msg-perimeter {
@@ -185,27 +186,50 @@
    }
 
    .message--wrapper {
-      width: 60%;
-      background: @darkish;
+      width: 100%;
+      background: @dark;
       height: 80%;
       padding: @pad;
    }
 
    .message--header, #messageBody {
       margin-left: @pad * 2;
+      color: @l-orange;
+   }
+
+   .from, .to {
+      color: @l-blue;
+      font-weight: bold;
+   }
+
+   .target {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+
+      li {
+         background: @darkish;
+         color: @orange;
+         padding: @pad / 2;
+         margin-top: @pad / 2;
+      }
    }
 
 
    #messageBody {
       width: 80%;
       resize: none;
-      background: @dark;
+      background: @darkish;
+      font-size: 1.2rem;
    }
 
 
    .inventory--wrapper {
       width: 100%;
-      background: @darkish;
+      background: @dark;
       height: 20%;
    }
 

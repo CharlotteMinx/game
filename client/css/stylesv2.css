@@ -97,7 +97,7 @@ input[type=text] {
   height: 2rem;
   padding: 0.5rem;
   display: flex;
-  background-color: #151c30;
+  background-color: #090C15;
   justify-content: center;
   align-items: center;
   color: #FFE591;
@@ -120,6 +120,7 @@ input[type=text] {
   color: #00B3FF;
   height: 10rem;
   padding: 0.5rem;
+  border-bottom: 1px solid #FF7700;
 }
 #msg-perimeter {
   font-size: 1.5rem;
@@ -127,23 +128,44 @@ input[type=text] {
   font-weight: bold;
 }
 .message--wrapper {
-  width: 60%;
-  background: #151c30;
+  width: 100%;
+  background: #090C15;
   height: 80%;
   padding: 0.5rem;
 }
 .message--header,
 #messageBody {
   margin-left: 1rem;
+  color: #FFE591;
+}
+.from,
+.to {
+  color: #ADE7FF;
+  font-weight: bold;
+}
+.target {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+.target li {
+  background: #151c30;
+  color: #FF7700;
+  padding: 0.25rem;
+  margin-top: 0.25rem;
 }
 #messageBody {
   width: 80%;
   resize: none;
-  background: #090C15;
+  background: #151c30;
+  font-size: 1.2rem;
 }
 .inventory--wrapper {
   width: 100%;
-  background: #151c30;
+  background: #090C15;
   height: 20%;
 }
 .right {
