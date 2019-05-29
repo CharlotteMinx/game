@@ -277,15 +277,33 @@
    }
 
    .chat--item {
-      background: @dark;
-      color: @l-blue;
-      height: 3rem;
-      display: flex;
-      flex-flow: column wrap;
+      padding: @pad;
 
+      //background: @dark;
+      color: @l-blue;
+      height: 4rem;
+      width: 100%;
+
+
+      display: flex;
+      flex-flow: column;
+      align-items: flex-start;
    }
 
-   .chat--item.right {
-      justify-self: right;
+   .chat_right {
+      //justify-items: flex-end;
+      align-items: flex-end;
+      
+      border: 1px solid @orange;
+   }
+
+   .chat--name {
+      color: @l-blue;
       background: @darkish;
+      padding: 0 @pad;
+   }
+
+   .chat--message {
+      background: @dark;
+      padding: @pad;
    }

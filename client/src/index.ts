@@ -183,8 +183,8 @@ io.on('renderPacketMessage', (data: any ) => {
 	target.empty();
 	data.players.map((p: any) => {
 		//<option value="option2">Option 2</option>
-		sender.append(`<option ${ p == data.sender ? `selected="selected` : undefined} "value="${p}">${p}</option>`);
-		target.append(`<option ${ p == data.target ? `selected="selected` : undefined} "value="${p}">${p}</option>`);
+		sender.append(`<li ${ p == data.sender ? `selected="selected` : undefined} "value="${p}">${p}</li>`);
+		target.append(`<li ${ p == data.target ? `selected="selected` : undefined} "value="${p}">${p}</li>`);
 
 	});
 	$('#messageBody').val(data.data);
@@ -211,8 +211,8 @@ io.on('updatePacketMessage', (username: string) => {
 		} 
 	})
 	if(!found) {
-		sender.append(`<option value="${username}">${username}</option>`);
-		target.append(`<option value="${username}">${username}</option>`);
+		sender.append(`<li value="${username}">${username}</li>`);
+		target.append(`<li value="${username}">${username}</li>`);
 	}
 
 });
