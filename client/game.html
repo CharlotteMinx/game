@@ -47,12 +47,24 @@
 				<div class="message--header">
 					<div class="message--head">
 						<div class="message--sender_wrapper">
+							<span class="from"> source > </span>
+							<select id="sender" class="sender">
+									<option value="option1" selected="selected">Option 1</option>
+									<option value="option2">Option 2</option>
+							</select>
+							<!--
 							<span  class="from"> source: </span>
-              <span> this </span>
+							<span> this </span>
+							-->
 						</div>
 						<div class="message--target_wrapper">
+							<span class="to"> dest > </span>
+							<select id="target" class="target">
+								<option value="option1" selected="selected">Option 1</option>
+								<option value="option2">Option 2</option>
+							</select>
+							<!--
 							<span class="to"> dest: [ <span id="chosen_target"> </span> ]</span> 
-								<!-- TODO na ul -->
 							<ul id="target" class="target">
 									<li value="option1" selected="selected">Artyčok</li>
 									<li value="option2">Bob</li>
@@ -60,6 +72,7 @@
 									<li value="option2">Alice</li>
 									<li value="option2">Bernhardt</li>
 							</ul>
+							-->
 						</div>
 
 					</div>
@@ -115,7 +128,6 @@
 			<input id="chatInput" type="text" />
 			<button id="chatSendBtn">send</button>
 		</div>
-
 	</div>
 
 <!-- Lower toolbar
