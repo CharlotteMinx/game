@@ -27,7 +27,7 @@ run command 'npm start' in both server and client directory to start hot reload 
 - Add ability to reconnect back to the game and use same player instance.
 - After drag and droping any item sync inventory and message attachments with actual server data after drag and drop (removes possibility of desync)
 - Introduce hardcore mode to the game which will use IP addresses instead of names and will take more realistic aproach. 
-
+- Add ability to reset round after one of players win.
 
 ### CZ
 
