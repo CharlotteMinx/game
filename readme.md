@@ -1,4 +1,4 @@
-# Asymetra - Network learning game
+# Asymetra - Network learning game platform
 Using webpack, typescript, socket.io, express, hot reload, node.js, and tsloader!
 
 ## instalation
@@ -7,6 +7,7 @@ run 'npm install' in both server and client directory
 
 ## usage
 run command 'npm start' in both server and client directory to start hot reload and auto compile and node server
+
 
 ### current progress
 - Created basic backbone for server - client communication.
@@ -27,11 +28,13 @@ run command 'npm start' in both server and client directory to start hot reload 
 - Add ability to reconnect back to the game and use same player instance.
 - After drag and droping any item sync inventory and message attachments with actual server data after drag and drop (removes possibility of desync)
 - Introduce hardcore mode to the game which will use IP addresses instead of names and will take more realistic aproach. 
-
+- Add ability to reset round after one of players win.
+- Add ability to download the game result with all turns as pdf or as text.
+- Add information about the game and how to play the game into both login and game page. Add some basic protocol schemes alongside.
 
 ### CZ
 
-Asymetra je výuková hra, která má pomoci studentům počítačových síti pochopit princip šifrování a útoku man-in-the-middle vizuální formou.
+Asymetra je vzdělávácí platforma a zároveň výuková hra, která má pomoci studentům počítačových síti pochopit princip šifrování a útoku man-in-the-middle vizuální formou.
 
 Cílová skupina jsou především studenti počítačových sítí ale i široká veřejnost. Předpokládáme že žáci budou znát pojmi jako IP adresa, šifrování, počítčová síť, internet a budou znát princip posílání paketů po počítačové síti. 
 
