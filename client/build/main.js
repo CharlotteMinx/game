@@ -6056,8 +6056,8 @@ io.on('renderPacketMessage', function (data) {
     target.empty();
     data.players.map(function (p) {
         //<option value="option2">Option 2</option>
-        sender.append("<select " + (p == data.sender ? "selected=\"selected" : undefined) + " \"value=\"" + p + "\">" + p + "</select>");
-        target.append("<select " + (p == data.target ? "selected=\"selected" : undefined) + " \"value=\"" + p + "\">" + p + "</select>");
+        sender.append("<option " + (p == data.sender ? "selected=\"selected" : undefined) + " \"value=\"" + p + "\">" + p + "</option>");
+        target.append("<option " + (p == data.target ? "selected=\"selected" : undefined) + " \"value=\"" + p + "\">" + p + "</option>");
     });
     $('#messageBody').val(data.data);
     $('div#messageAttachment').html = null;
@@ -6080,8 +6080,8 @@ io.on('updatePacketMessage', function (username) {
         }
     });
     if (!found) {
-        sender.append("<select value=\"" + username + "\">" + username + "</select>");
-        target.append("<select value=\"" + username + "\">" + username + "</select>");
+        sender.append("<option value=\"" + username + "\">" + username + "</option>");
+        target.append("<option value=\"" + username + "\">" + username + "</option>");
     }
 });
 var sendPacketMessage = function () {
