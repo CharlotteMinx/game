@@ -8,6 +8,7 @@ run 'npm install' in both server and client directory
 ## usage
 run command 'npm start' in both server and client directory to start hot reload and auto compile and node server
 
+
 ### current progress
 - Created basic backbone for server - client communication.
 - User can join/create lobby which attaches clients on joining and unmounts them on leaving.
