@@ -177,6 +177,9 @@ let setEventListenersForDaD = () => {
 
 
 io.on('renderPacketMessage', (data: any ) => {
+
+	console.log('render')
+	console.log(data);
 	let sender = $('#sender');
 	let target = $('#target');
 	sender.empty();

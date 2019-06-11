@@ -6,12 +6,25 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
       <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap" rel="stylesheet"> 
 
-
+      <style>
+      .particles-js-canvas-el {
+        width: 100vw !important;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100vh !important;
+        z-index: 1;
+      }
+      #main div { z-index: 2; position: relative;}
+      </style>
       <title>Asymetra - Login</title>
 
       <link rel="stylesheet" href="./login.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-      <script>
+      <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>    
+     <script>
           var socket = io();
           socket.emit('getLobbies');
 
@@ -121,6 +134,8 @@
       </div>
     </div>
   </div>
-
+  <script>
+    particlesJS.load('main', './particles.json', function() {});
+    </script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 
 import {joinLobbyMessage, Player, Lobby, createLobbyMessage, Item, Message} from './types';
 import * as moment from 'moment';
-import { Socket } from 'dgram';
 
 
 export class SocketServer { 
@@ -29,6 +28,7 @@ export class SocketServer {
     // sends message to client
 
     sendMessageToClient = (socket: any, message: string): void => {
+        console.log("client message" + message);
         socket.emit('displayMessage', message);
     }
 
@@ -203,7 +203,6 @@ export class SocketServer {
     getAllPlayerItems = (player: Player): Array<Item> => {
         let items: Array<Item> = player.items;
         if(player.message !== null) items = [...player.items, ...player.message.items];
-        console.log(items)
         return items;
 
     }
@@ -271,8 +270,6 @@ export class SocketServer {
             });
 
             socket.on('addItemToMessage', (itemId: number) => {
-                console.log(itemId);
-                console.log('adding item to message inv ' )
                 let player =  this.getPlayerBySocket(socket);
                 let items = this.getAllPlayerItems(player);
 
@@ -289,11 +286,9 @@ export class SocketServer {
                 } else {
                     this.sendMessageToClient(socket, "Wait for your turn.");
                 }
-                console.log(player.message);
             })
 
             socket.on('addItemToPlayerInvenotory', (itemId: number) => {
-                console.log('adding item to player inv ' + itemId)
                 let player =  this.getPlayerBySocket(socket);
                 let allItems = this.getAllPlayerItems(player);
                 
@@ -302,11 +297,8 @@ export class SocketServer {
                 } else if(!allItems.find(i => i.id == itemId)){
                     this.sendMessageToClient(socket, 'Errow when adding item to invenotory has occures.')
                 } else {
-                    console.log("adding " + player.message.items.find(i => i.id == itemId).name);
                     player.items.push(player.message.items.find(i => i.id == itemId));
                 }
-                console.log(!allItems.find(i => i.id == itemId) + "at add item to inv");
-                console.log(player.items);
             })
 
             // assigns client to lobby
@@ -407,10 +399,8 @@ export class SocketServer {
                             items: foundItems,
                             players: playerNames,
                         };
-
-                        console.log('message items diff' + data.items.length + ' vs ' + newMessage.items.length);
                         
-                        lobby.turn++;
+                        lobby.round++;
                         
                         this.io.to(`${lobby.turn}`).emit('clearPacketMessage');
                         this.io.to(`${lobby.turn}`).emit('renderPacketMessage', newMessage);
